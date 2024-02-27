@@ -17,9 +17,7 @@ if(isset($_SESSION['user_role'])){
 }
 
 
-
 ?>
-
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <ul class="navbar-nav">
