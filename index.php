@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-include 'php/check_auction.php';
 
 if(isset($_GET['page'])){
   if($_GET['page'] == 'logout'){
