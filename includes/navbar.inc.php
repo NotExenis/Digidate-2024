@@ -8,13 +8,15 @@ if(isset($_SESSION['user_role'])){
         $navitems = array(
             array('test', 'test'),
         );
-    } else {
-        $navitems = array(
-            array('login', 'Login'),
-            array('register', 'Register'),
-        );
     }
+
+} else {
+    $navitems = array(
+        array('login', 'Login'),
+        array('register', 'Register'),
+    );
 }
+
 
 
 
