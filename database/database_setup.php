@@ -8,8 +8,8 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Create the database if it doesn't exist
-    $conn->exec("CREATE DATABASE IF NOT EXISTS $dbname");
-    $conn->exec("USE $dbname");
+    $conn->exec("CREATE DATABASE IF NOT EXISTS digidate");
+    $conn->exec("USE digidate");
 
     // Read SQL queries from file
     $sqlFile = 'digidate.sql';
