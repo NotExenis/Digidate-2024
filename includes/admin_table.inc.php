@@ -24,6 +24,9 @@ include '../private/conn.php';
         <tr>
             <td><?= $row['users_first_name'] . ' ' . $row['users_preposition'] . ' ' . $row['users_last_name'] ?></td>
             <td><?= $row['users_email'] ?></td>
+            <?php
+
+            ?>
             <td><button>EDIT</button></td>
             <td><button>DELETE</button></td>
         </tr>

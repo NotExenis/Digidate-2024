@@ -8,8 +8,7 @@ if(isset($_SESSION['user_role'])){
         $navitems = array(
             array('test', 'test'),
         );
-    }
-
+    } 
 } else {
     $navitems = array(
         array('login', 'Login'),
@@ -18,10 +17,7 @@ if(isset($_SESSION['user_role'])){
 }
 
 
-
-
 ?>
-
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <ul class="navbar-nav">

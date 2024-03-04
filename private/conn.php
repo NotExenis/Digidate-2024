@@ -1,15 +1,12 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
 
-try {
+  try {
     $conn = new PDO("mysql:host=$servername;dbname=digidate", $username, $password);
-
-} catch(PDOException $e) {
+  } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
     die();
-}
+  }
 ?>
-
-
