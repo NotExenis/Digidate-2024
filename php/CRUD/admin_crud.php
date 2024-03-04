@@ -1,6 +1,7 @@
 <?php
 
-include '../../../private/conn.php';
+require '../../private/conn.php';
+
 
 print_r($_POST);
 
@@ -11,12 +12,15 @@ if(isset($_POST['admin_add'])) {
 }
 
 if(isset($_POST['admin_delete'])) {
-
+    //print_r($_POST);
+    AdminDelete($_POST['admin_delete']);
 }
 
 //Inserts new admin with a value of users_is_admin with a value of 1;
 
 function AdminAdd($first_name, $preposition, $last_name, $email, $password) {
+    include '../../private/conn.php';
+
     $sql_admin_insert = 'INSERT INTO tbl_users (users_first_name, users_preposition, users_last_name, users_email, users_password, users_is_admin) VALUES (:first_name, :preposition, :last_name, :email, :password, 1)';
     $sth_admin_insert = $conn->prepare($sql_admin_insert);
     $sth_admin_insert->bindParam(":first_name", $first_name);
@@ -29,7 +33,12 @@ function AdminAdd($first_name, $preposition, $last_name, $email, $password) {
 }
 
 function AdminDelete($admin_id) {
+    include '../../private/conn.php';
 
+    $sql_admin_delete = 'DELETE FROM tbl_users WHERE users_id = :user_id';
+    $sth_admin_delete = $conn->prepare($sql_admin_delete);
+    $sth_admin_delete->bindParam(":user_id", $_POST['admin_delete']);
+    $sth_admin_delete->execute();
 }
 
 
