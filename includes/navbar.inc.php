@@ -3,6 +3,7 @@ if(isset($_SESSION['user_role'])){
     if($_SESSION['user_role'] == 'admin'){
         $navitems = array(
             array('test', 'test'),
+            array('admin_table', 'Admins')
         );
     } elseif ($_SESSION['user_role'] == 'user'){
         $navitems = array(

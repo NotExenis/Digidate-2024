@@ -1,18 +1,18 @@
 <?php
 
 require '../../private/conn.php';
-
-
 print_r($_POST);
-
 
 if(isset($_POST['admin_add'])) {
     AdminAdd($_POST['first_name'], $_POST['preposition'], $_POST['last_name'], $_POST['email']);
 }
-
 if(isset($_POST['admin_delete'])) {
     //print_r($_POST);
     AdminDelete($_POST['admin_delete']);
+}
+if(isset($_POST['admin_edit'])) {
+    //print_r($_POST);
+    AdminEdit($_POST['first_name'], $_POST['preposition'], $_POST['last_name'], $_POST['admin_edit']);
 }
 
 //Inserts new admin with a value of users_is_admin with a value of 1;
@@ -31,8 +31,25 @@ function AdminAdd($first_name, $preposition, $last_name, $email) {
     $sth_admin_insert->bindParam(":password", $password_user);
 
     $sth_admin_insert->execute();
+    header('Location: ../../index.php?page=admin_table');
+
 }
 
+function AdminEdit($first_name, $preposition, $last_name, $user_id) {
+
+    include '../../private/conn.php';
+
+    $sql_admin_insert = 'UPDATE tbl_users SET users_first_name = :first_name, users_preposition = :preposition, users_last_name = :last_name WHERE users_id = :users_id';
+    $sth_admin_insert = $conn->prepare($sql_admin_insert);
+    $sth_admin_insert->bindParam(":first_name", $first_name);
+    $sth_admin_insert->bindParam(":preposition", $preposition);
+    $sth_admin_insert->bindParam(":last_name", $last_name);
+    $sth_admin_insert->bindParam(":users_id", $user_id);
+
+    $sth_admin_insert->execute();
+    header('Location: ../../index.php?page=admin_table');
+
+}
 function AdminDelete($admin_id) {
     include '../../private/conn.php';
 
@@ -40,6 +57,8 @@ function AdminDelete($admin_id) {
     $sth_admin_delete = $conn->prepare($sql_admin_delete);
     $sth_admin_delete->bindParam(":user_id", $_POST['admin_delete']);
     $sth_admin_delete->execute();
+    header('Location: ../../index.php?page=admin_table');
+
 }
 
 
