@@ -1,6 +1,10 @@
 <?php
 include 'private/conn.php';
 
+//NOTES: MELDING HIER
+
+//NOTES: BEVESTIGING HIER
+
 ?>
 <div class="container">
     <div class="row">

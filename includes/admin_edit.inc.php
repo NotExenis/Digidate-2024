@@ -1,4 +1,11 @@
 <?php
+
+
+
+//NOTES: MELDING HIER
+
+//NOTES: BEVESTIGING HIER
+
 include 'private/conn.php';
 $sql_admin_select = "SELECT users_id, users_first_name, users_preposition, users_last_name, users_email, users_is_admin, users_creation_date FROM tbl_users WHERE users_id = :user_id";
 $sth_admin_select = $conn->prepare($sql_admin_select);
