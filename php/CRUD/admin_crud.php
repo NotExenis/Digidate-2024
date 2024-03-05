@@ -18,8 +18,8 @@ if(isset($_POST['admin_delete'])) {
 //Inserts new admin with a value of users_is_admin with a value of 1;
 
 function AdminAdd($first_name, $preposition, $last_name, $email) {
-    $password = password_hash("password", PASSWORD_DEFAULT);
 
+    $password_user = password_hash("password", PASSWORD_DEFAULT);
     include '../../private/conn.php';
 
     $sql_admin_insert = 'INSERT INTO tbl_users (users_first_name, users_preposition, users_last_name, users_email, users_password, users_is_admin) VALUES (:first_name, :preposition, :last_name, :email, :password, 1)';
@@ -28,7 +28,7 @@ function AdminAdd($first_name, $preposition, $last_name, $email) {
     $sth_admin_insert->bindParam(":preposition", $preposition);
     $sth_admin_insert->bindParam(":last_name", $last_name);
     $sth_admin_insert->bindParam(":email", $email);
-    $sth_admin_insert->bindParam(":password", $password);
+    $sth_admin_insert->bindParam(":password", $password_user);
 
     $sth_admin_insert->execute();
 }

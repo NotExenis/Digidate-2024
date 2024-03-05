@@ -33,7 +33,7 @@ if ($count_tags == 0) {
 function fill_database_languages() {
     include '../private/conn.php';
 
-    $languagesComplete = file_get_contents('../languages.json');
+    $languagesComplete = file_get_contents('testdata/languages.json');
     $decoded_json = json_decode($languagesComplete, true);
 
 
