@@ -13,7 +13,6 @@ $sth_admin_select->bindParam(":user_id", $_POST['admin_edit']);
 $sth_admin_select->execute();
 $result = $sth_admin_select->fetch();
 ?>
-
 <div class="container">
     <div class="row">
         <div class="col-sm">

@@ -6,6 +6,7 @@ include 'private/conn.php';
 //NOTES: BEVESTIGING HIER
 
 ?>
+
 <div class="container">
     <div class="row">
         <a href="index.php?page=admin_insert"><button class="btn btn-primary" >INSERT</button></a>
@@ -39,7 +40,7 @@ include 'private/conn.php';
                            if($_SESSION['user_role'] == 'admin') {
                                ?>
                                <form action="index.php?page=admin_edit" method="post"><td><button class="btn btn-primary" type="submit" name="admin_edit" value="<?= $row['users_id'] ?>">EDIT</button></td></form>
-                               <form action="../php/CRUD/admin_crud.php" method="post"><td><button class="btn btn-primary" type="submit" name="admin_delete" value="<?= $row['users_id'] ?>">Delete</button></td></form>
+                               <form action="php/CRUD/admin_crud.php" method="post"><td><button class="btn btn-primary" type="submit" name="admin_delete" value="<?= $row['users_id'] ?>">Delete</button></td></form>
                     <?php
                            }
                         }
