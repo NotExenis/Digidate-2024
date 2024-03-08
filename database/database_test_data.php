@@ -2,7 +2,7 @@
 include '../private/conn.php';
 //Languages Checker
 $sql_data_language = 'SELECT * FROM tbl_languages';
-$sth_data_language = $conn->prepare($sql_data_language);
+$sth_data_language = $db->prepare($sql_data_language);
 $sth_data_language->execute();
 $count_language = $sth_data_language->fetchColumn();
 
@@ -12,7 +12,7 @@ if ($count_language == 0) {
 
 //Education Checker
 $sql_data_education = 'SELECT * FROM tbl_education';
-$sth_data_education = $conn->prepare($sql_data_education);
+$sth_data_education = $db->prepare($sql_data_education);
 $sth_data_education->execute();
 $count_education = $sth_data_education->fetchColumn();
 
@@ -22,7 +22,7 @@ if ($count_education == 0) {
 
 //Tags Checker
 $sql_data_tags = 'SELECT * FROM tbl_tags';
-$sth_data_tags = $conn->prepare($sql_data_tags);
+$sth_data_tags = $db->prepare($sql_data_tags);
 $sth_data_tags->execute();
 $count_tags = $sth_data_tags->fetchColumn();
 
@@ -44,7 +44,7 @@ function fill_database_languages() {
         $name = $language['name'];
 
         $sql = "INSERT INTO tbl_languages (languages_name, languages_code) VALUES (:language, :code)";
-        $sth = $conn->prepare($sql);
+        $sth = $db->prepare($sql);
         $sth->bindParam(":language", $name);
         $sth->bindParam(":code", $code);
         $sth->execute();
@@ -60,7 +60,7 @@ function fill_database_education() {
     foreach($education as $key => $value) {
         echo $value;
         $sql = "INSERT INTO tbl_education (education_name) VALUES (:education)";
-        $sth = $conn->prepare($sql);
+        $sth = $db->prepare($sql);
         $sth->bindParam(":education", $value);
         $sth->execute();
     }
@@ -73,7 +73,7 @@ function fill_database_tags() {
     foreach($tags as $key => $value) {
         echo $value;
         $sql = "INSERT INTO tbl_tags (tags_title, tags_color) VALUES (:tag, :tag_color)";
-        $sth = $conn->prepare($sql);
+        $sth = $db->prepare($sql);
         $sth->bindParam(":tag", $value);
         $sth->bindParam(":tag_color", rand_color());
         $sth->execute();

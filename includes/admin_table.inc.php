@@ -26,7 +26,7 @@ include 'private/conn.php';
                 $_SESSION['user_role'] = 'admin';
                 //$sql_admin_select = "SELECT users_first_name, users_preposition, users_last_name, users_email, users_is_admin FROM tbl_users WHERE users_is_admin = ". $_SESSION['role'] . " ";
                 $sql_admin_select = "SELECT users_id, users_first_name, users_preposition, users_last_name, users_email, users_is_admin, users_creation_date FROM tbl_users WHERE users_is_admin = 1 ";
-                $sth_admin_select = $conn->prepare($sql_admin_select);
+                $sth_admin_select = $db->prepare($sql_admin_select);
                 $sth_admin_select->execute();
 
                 while ($row = $sth_admin_select->fetch(PDO::FETCH_ASSOC)) {

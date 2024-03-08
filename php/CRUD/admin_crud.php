@@ -26,7 +26,7 @@ function AdminAdd($first_name, $preposition, $last_name, $email) {
     include '../../private/conn.php';
 
     $sql_admin_insert = 'INSERT INTO tbl_users (users_first_name, users_preposition, users_last_name, users_email, users_password, users_is_admin) VALUES (:first_name, :preposition, :last_name, :email, :password, 1)';
-    $sth_admin_insert = $conn->prepare($sql_admin_insert);
+    $sth_admin_insert = $db->prepare($sql_admin_insert);
     $sth_admin_insert->bindParam(":first_name", $first_name);
     $sth_admin_insert->bindParam(":preposition", $preposition);
     $sth_admin_insert->bindParam(":last_name", $last_name);
@@ -43,7 +43,7 @@ function AdminEdit($first_name, $preposition, $last_name, $user_id) {
     include '../../private/conn.php';
 
     $sql_admin_insert = 'UPDATE tbl_users SET users_first_name = :first_name, users_preposition = :preposition, users_last_name = :last_name WHERE users_id = :users_id';
-    $sth_admin_insert = $conn->prepare($sql_admin_insert);
+    $sth_admin_insert = $db->prepare($sql_admin_insert);
     $sth_admin_insert->bindParam(":first_name", $first_name);
     $sth_admin_insert->bindParam(":preposition", $preposition);
     $sth_admin_insert->bindParam(":last_name", $last_name);
@@ -57,7 +57,7 @@ function AdminDelete($admin_id) {
     include '../../private/conn.php';
 
     $sql_admin_delete = 'DELETE FROM tbl_users WHERE users_id = :user_id';
-    $sth_admin_delete = $conn->prepare($sql_admin_delete);
+    $sth_admin_delete = $db->prepare($sql_admin_delete);
     $sth_admin_delete->bindParam(":user_id", $_POST['admin_delete']);
     $sth_admin_delete->execute();
     header('Location: ../../index.php?page=admin_table');
@@ -69,7 +69,7 @@ function AdminDelete($admin_id) {
 
 //Selects the logged-in admin.
 /*$sql_admin_select = "SELECT users_id FROM tbl_users WHERE users_is_admin = ". $_SESSION['role'] . " ";
-$sth_admin_select = $conn->prepare($sql_admin_select);
+$sth_admin_select = $db->prepare($sql_admin_select);
 $sth_admin_select->execute();
 $selected_admin = $sth_admin_select->fetchColumn();*/
 
