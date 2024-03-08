@@ -1,7 +1,8 @@
 <?php
 
 require '../../private/conn.php';
-print_r($_POST);
+include '../audit_trail.php';
+//print_r($_POST);
 
 if(isset($_POST['admin_add'])) {
     AdminAdd($_POST['first_name'], $_POST['preposition'], $_POST['last_name'], $_POST['email']);
@@ -11,8 +12,10 @@ if(isset($_POST['admin_delete'])) {
     AdminDelete($_POST['admin_delete']);
 }
 if(isset($_POST['admin_edit'])) {
-    //print_r($_POST);
-    AdminEdit($_POST['first_name'], $_POST['preposition'], $_POST['last_name'], $_POST['admin_edit']);
+    print_r($_POST);
+    Audit_AdminUpdate($_POST);
+    AdminEdit($_POST['users_first_name'], $_POST['users_preposition'], $_POST['users_last_name'], $_POST['users_id']);
+
 }
 
 //Inserts new admin with a value of users_is_admin with a value of 1;
@@ -47,7 +50,7 @@ function AdminEdit($first_name, $preposition, $last_name, $user_id) {
     $sth_admin_insert->bindParam(":users_id", $user_id);
 
     $sth_admin_insert->execute();
-    header('Location: ../../index.php?page=admin_table');
+    //header('Location: ../../index.php?page=admin_table');
 
 }
 function AdminDelete($admin_id) {
