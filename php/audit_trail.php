@@ -45,9 +45,13 @@ function Audit_AdminUpdate($array) {
 
     print_r($oldValue);
         foreach($array as $key => $value) {
-            if($oldValue[$key] != $value) {
-                CreateLogEntry('Admin Edit', 'tbl_users', $key, $oldValue[$key], $value, $array['users_id']);
+            if(isset($oldValue[$key])) {
+                $old_value = $oldValue[$key];
+                if($oldValue[$key] != $value) {
+                    CreateLogEntry('Admin Edit', 'tbl_users', $key, $old_value, $value, $array['users_id']);
+                }
             }
+
         }
 
 }
