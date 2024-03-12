@@ -2,7 +2,7 @@
 
 require '../../private/conn.php';
 include '../audit_trail.php';
-//print_r($_POST);
+
 
 if(isset($_POST['admin_add'])) {
     AdminAdd($_POST['first_name'], $_POST['preposition'], $_POST['last_name'], $_POST['email']);
@@ -12,7 +12,7 @@ if(isset($_POST['admin_delete'])) {
     AdminDelete($_POST['admin_delete']);
 }
 if(isset($_POST['admin_edit'])) {
-    print_r($_POST);
+    //print_r($_POST);
     Audit_AdminUpdate($_POST);
     AdminEdit($_POST['users_first_name'], $_POST['users_preposition'], $_POST['users_last_name'], $_POST['users_id']);
 
