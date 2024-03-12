@@ -1,4 +1,5 @@
 <?php
+session_start();
 require '../private/conn.php';
 
 $tag = $_POST['tag'];
@@ -18,6 +19,7 @@ if($stmt->rowCount() == 0){
         ':tag' => $tag,
         ':color' => $color
     ));
+    header('Location:../index.php?page=tags');
 } else {
     $_SESSION['notification'] = "Tag you have chosen already exists.";
     header('Location:../index.php?page=add_tag');
@@ -26,4 +28,3 @@ if($stmt->rowCount() == 0){
 
 ?>
 
-JP WAS HERE.

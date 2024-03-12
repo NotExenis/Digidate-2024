@@ -2,7 +2,6 @@
 session_start();
 require '../private/conn.php';
 
-
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $username = $_POST['username'];
     $name = $_POST['firstname'];
@@ -22,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     foreach($required_fields as $fields){
         if(empty($_POST[$fields])){
             $_SESSION['notification'] = 'Please fill in all the required fields';
-            header('location:../index.php?page=');
+            header('location:../index.php?page=register');
             exit;
         }
     }
@@ -31,18 +30,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         return preg_match('/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*()-_=+{};:,<.>]).{15,}$/', $password);
     }
     
-    if (!is_valid_password($password)) {
+    if (!is_valid_password($_POST['password'])) {
         $_SESSION['notification'] = 'Password is invalid, make sure it contains exactly 15 characters, at least 1 uppercase letter, 1 lowercase letter, 1 special character, and 1 number';
         header('location:../index.php?page=register');
         exit;
     }
     
 
-    $sql = 'SELECT * FROM tbl_users WHERE users_email =:email AND users_username = :username';
+    $sql = 'SELECT * FROM tbl_users WHERE users_email =:email';
     $stmt = $db->prepare($sql);
     $stmt->execute(array(
         ':email'=>$email,
-        ':username'=>$username,
     ));
 
     if($stmt->rowcount() == 0){
@@ -90,7 +88,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     header('location:../index.php?page=login');
         }
     } else {
-        $_SESSION['notification'] = "Your Email or Username is already in use";
+        $_SESSION['notification'] = "Your Email is already in use";
         header('location:../index.php?page=register');
     }
     

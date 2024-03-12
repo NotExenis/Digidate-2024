@@ -43,13 +43,13 @@ $stmt_location->execute();
                     </div>
 
                     <div class="mb-3">
-                        <label for="lastname" class="form-label">Last name</label>
+                        <label for="lastname" class="form-label">Last name *</label>
                         <input type="text" class="form-control" id="lastname" name="lastname">
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Phone number *</label>
-                        <input type="tel" class="form-control" name="phone" required>
+                        <input type="number" class="form-control" name="phone" required>
                     </div>
 
                     <div class="mb-3">
@@ -59,7 +59,7 @@ $stmt_location->execute();
 
                     <div class="mb-3">
                         <label for="password" class="form-label">Password *</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control" id="password" title="Password must contain at least 15 characters, including at least one digit, one lowercase letter, one uppercase letter, and one special character." pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-_=+{};:,<.>]).{15,}$" name="password" required>
                         <input type="checkbox" id="check">Show Password
                     </div>
 
