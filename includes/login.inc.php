@@ -1,4 +1,13 @@
 <script src="./functions/showpass.js"></script>
+<?php
+require "functions/errormessage.php";
+
+if(isset($_SESSION['notification'])) {
+$error = $_SESSION['notification'];
+errormessage($error);
+unset($_SESSION['notification']);
+}
+?>
 <div class="container">
     <div class="row">
         <div class="col-sm">
