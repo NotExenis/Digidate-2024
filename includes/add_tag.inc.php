@@ -10,10 +10,12 @@
         </div>
         <div class="col-sm">
             <form method="POST" action="php/add_tag.php">
+                <br>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Add a tag</label>
                     <input type="text" class="form-control" name="tag" placeholder="Tag name" required>
                 </div>
+                <br>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Add a color</label>
                     <input type="color" name="colorpick">
