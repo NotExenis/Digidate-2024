@@ -13,7 +13,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="preposition">Preposition:</label>
-                    <input type="text" class="form-control" id="preposition" name="preposition" placeholder="Preposition"  required>
+                    <input type="text" class="form-control" id="preposition" name="preposition" placeholder="Preposition" >
                 </div>
                 <div class="mb-3">
                     <label for="last_name">Last Name:</label>

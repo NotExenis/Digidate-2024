@@ -5,7 +5,7 @@ $sth_admin_select = $db->prepare($sql_admin_select);
 $sth_admin_select->bindParam(":user_id", $_POST['admin_edit']);
 $sth_admin_select->execute();
 $result = $sth_admin_select->fetch();
-print_r($result);
+
 ?>
 <div class="container">
     <div class="row">

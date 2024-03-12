@@ -50,7 +50,7 @@ function AdminEdit($first_name, $preposition, $last_name, $user_id) {
     $sth_admin_insert->bindParam(":users_id", $user_id);
 
     $sth_admin_insert->execute();
-    //header('Location: ../../index.php?page=admin_table');
+    header('Location: ../../index.php?page=admin_table');
 
 }
 function AdminDelete($admin_id) {
