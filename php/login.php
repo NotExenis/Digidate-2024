@@ -31,7 +31,11 @@ if (password_verify($password, $r['users_password'])) {
                     $stmt2->execute(array(
                         ':email' => $email,
                     ));
-                    header('Location:../index.php?page=2fa_setup');
+                    if($_SESSION['users_role'] == 1) {
+                        header('Location:../index.php?page=admin_password');
+                    } else {
+                        header('Location:../index.php?page=2fa_setup');
+                    }
                 } else {
                     header('Location:../index.php?page=landing_page');
                 }

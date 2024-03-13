@@ -1,10 +1,12 @@
 <?php
 if(isset($_SESSION['users_role'])){
-    if($_SESSION['users_role'] == '1'){ //User
+    if($_SESSION['users_role'] == '1'){ //Admin
         $navitems = array(
             array('logout', 'Logout'),
+            array('admin_table', 'Admin Table'),
+
         );
-    } elseif ($_SESSION['users_role'] == '0'){ //Admin
+    } elseif ($_SESSION['users_role'] == '0'){ //User
         $navitems = array(
             array('logout', 'Logout'),
         );

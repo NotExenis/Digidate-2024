@@ -1,4 +1,15 @@
 
+<?php
+require 'functions/errormessage.php';
+
+if(isset($_SESSION['error_message'])) {
+    //print_r($_SESSION);
+    errormessage($_SESSION['error_message']);
+    unset($_SESSION['error_message']);
+}
+
+?>
+
 <div class="container">
     <div class="row">
         <div class="col-sm">
