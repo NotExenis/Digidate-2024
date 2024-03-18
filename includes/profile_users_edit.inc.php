@@ -29,7 +29,7 @@ $stmt_tags->execute();
     <div class="col-sm">
 
 <?php
-multiForm('municipality');
+multiForm('tbl_tags');
 ?>
 
     </div>
