@@ -5,9 +5,6 @@ if (isset($_SESSION['notification'])) {
     echo '<p class="text-red-500">' . $_SESSION['notification'] . '</p>';
     unset($_SESSION['notification']);
 }
-
-
-
 $sql_location = "SELECT municipality_name, municipality_id
                  FROM tbl_municipalities";
 $stmt_location = $db->prepare($sql_location);
@@ -38,7 +35,6 @@ $sql_user_education = "SELECT education_name FROM tbl_users INNER JOIN tbl_users
 $stmt_user_education = $db->prepare($sql_user_education);
 $stmt_user_education->bindParam(":user_id", $_SESSION['users_id']);
 $stmt_user_education->execute();
-
 ?>
 <script>
     $(document).ready(function() {
@@ -50,7 +46,6 @@ $stmt_user_education->execute();
             }
         });
     });
-
     $("#add_tag").on("click", function() {
         $("#tag_modal").show(); // Show the tag_modal div when add_tag button is clicked
     });
@@ -131,8 +126,8 @@ $stmt_user_education->execute();
                 <div class="form-group mb-3 mt-3">
                     Upload this file: <input type=file name="image[]" id="image" multiple="multiple" accept="image/jpeg, image/jpg, image/png">
                 </div>
-                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="max-width: 300px">
+                    <div class="carousel-inner p-5">
                         <?php
                         $x = 0;
                         foreach ($stmt_images->fetchAll(PDO::FETCH_ASSOC) as $image) {
@@ -140,28 +135,27 @@ $stmt_user_education->execute();
                             if($x == 0) {
                                 ?>
                                 <div class="carousel-item active">
-                                    <img src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
+                                    <img class="d-block w-200" src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
                                 </div>
                                 <?php
                             } else {
                                 ?>
                                 <div class="carousel-item">
-                                    <img src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
+                                    <img class="d-block w-200" src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
                                 </div>
                                 <?php
                             }
-
+                        $x++;
                         }
                         ?>
-
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
+                        <span class="sr-only"></span>
                     </a>
                     <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
+                        <span class="sr-only"></span>
                     </a>
                 </div>
 
