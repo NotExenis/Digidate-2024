@@ -23,6 +23,12 @@ $sql_tags = "SELECT tags_title, tags_id
 $stmt_tags = $db->prepare($sql_tags);
 $stmt_tags->execute();
 
+$sql_usertags = "SELECT * FROM tbl_usertags INNER JOIN tbl_tags ON tags_id = usertags_tags_id WHERE usertags_users_id = :user_id";
+$stmt_usertags = $db->prepare($sql_usertags);
+$stmt_usertags->bindParam(":user_id", $_SESSION['users_id']);
+$stmt_usertags->execute();
+$usertags = $stmt_usertags->fetchAll(PDO::FETCH_ASSOC);
+
 $sql_images = "SELECT * FROM tbl_images WHERE images_user_id = :user_id";
 $stmt_images = $db->prepare($sql_images);
 $stmt_images->bindParam(":user_id", $_SESSION['users_id']);
@@ -36,6 +42,7 @@ $stmt_user_education->execute();
 ?>
 <script>
     $(document).ready(function() {
+        $("#tag_modal").hide();
         $("#image").on("change", function() {
             if ($("#image")[0].files.length > 5) {
                 alert("You can select only 5 images");
@@ -43,21 +50,25 @@ $stmt_user_education->execute();
             }
         });
     });
+
+    $("#add_tag").on("click", function() {
+        $("#tag_modal").show(); // Show the tag_modal div when add_tag button is clicked
+    });
+    $('#close').on('click', function() {
+        $('#error').hide();
+    });
+
+    const element = document.getElementById("add_tag");
+    element.addEventListener("click", myFunction);
+
+    function myFunction() {
+        document.getElementById("tag_modal").innerHTML = "multiFormTags()";
+    }
 </script>
-<div class="container">
-    <div class="col-sm">
-    </div>
-    <div class="col-sm">
 
 <?php
-multiFormTags('tbl_tags');
 ?>
-
-    </div>
-    <div class="col-sm">
-    </div>
-
-</div>
+<div id="tag_modal"></div>
 
 <div class="container">
     <div class="row">
@@ -105,18 +116,27 @@ multiFormTags('tbl_tags');
                 </div>
                 <div class="mb-3">
                     <label for="education" class="form-label">Tags</label>
-                    <select class="form-select" value="<?= $tags['tags_id']?>" name="tag[]" multiple>
-                        <?php foreach($stmt_tags as $tags){ ?>
-                            <option><?= $tags['tags_title'] ?></option>
-                        <?php } ?>
+                    <div class="container">
+                        <?php foreach($usertags as $tags){
+                            $color = isset($tags["tags_color"]) ? $tags["tags_color"] : "blue";
+                            ?>
+                            <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $tags['tags_title'] ?>
+                        </span>
+                        <?php }
+                        ?>
+                        <badge id="add_tag" class="bi bi-plus bg-primary p-2 badge-clickable" onclick="">Add tag</badge>
+
+                    </div>
+
                     </select>
                 </div>
                 <div class="form-group mb-3 mt-3">
-                    <label>Select Image File:</label>
                     Upload this file: <input type=file name="image[]" id="image" multiple="multiple" accept="image/jpeg, image/jpg, image/png">
                 </div>
                 <?php foreach ($stmt_images->fetchAll(PDO::FETCH_ASSOC) as $image) { ?>
-                    <img src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
+                    <div class="container">
+                        <img src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
+                    </div>
                 <?php
                 }
                  ?>

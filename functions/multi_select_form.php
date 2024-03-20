@@ -1,10 +1,10 @@
 <?php
 
-function multiFormTags($table) {
+function multiFormTags() {
 
     include "private/conn.php";
 
-    $sql = "SELECT * FROM " . $table . " ";
+    $sql = "SELECT * FROM tbl_tags";
     $stmt = $db->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,35 +32,42 @@ function multiFormTags($table) {
         });
 
     </script>
-    <div class="" id="error" role="alert">
-        <div class="container">
+    <div class="position-absolute translate-middle-x" id="error" role="alert">
+        <div class="d-flex container">
             <div>search</div>
-
-            <?php
-
+            <div class="row">
+                <?php
+                $x = 0;
                 foreach($result as $array) {
+                    ?>
+                    <div class="col"> <!-- Adjust col-md-3 according to your layout -->
+                        <?php
                         $color = isset($array["tags_color"]) ? $array["tags_color"] : "blue";
-
-
-                        if(in_array($user_tags['usertags_tags_id'], $array)) {
-                        }
-
-                        ?>
-                    <div class="container-sm">
-                            <?php if(in_array($array['tags_id'], $user_tags)) { ?>
-                        <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $array['tags_title'] ?>
+                        if(isset($user_tags[$x])) {
+                            if($user_tags[$x] != null) {
+                                ?>
+                                <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $array['tags_title'] ?>
                             <input class="checkbox" type="checkbox" checked>
-                        </span> <?php } else { ?>
-                        <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $array['tags_title'] ?>
-                            <input class="checkbox" type="checkbox">
-                        </span> <?php } ?>
+                        </span>
+                                <?php
+                            }
+                        } else {
+                            ?>
+                            <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $array['tags_title'] ?>
+                        <input class="checkbox" type="checkbox">
+                    </span>
+                            <?php
+                        }
+                        ?>
                     </div>
-            <?php
-
+                    <?php
+                    $x++;
                 }
-             ?>
-
+                ?>
+            </div>
         </div>
+        <button type="button" id="close" class="btn btn-close float-right" aria-label="Close"></button>
+
     </div>
 <?php
 }
