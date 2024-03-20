@@ -125,21 +125,46 @@ $stmt_user_education->execute();
                         <?php }
                         ?>
                         <badge id="add_tag" class="bi bi-plus bg-primary p-2 badge-clickable" onclick="">Add tag</badge>
-
                     </div>
-
                     </select>
                 </div>
                 <div class="form-group mb-3 mt-3">
                     Upload this file: <input type=file name="image[]" id="image" multiple="multiple" accept="image/jpeg, image/jpg, image/png">
                 </div>
-                <?php foreach ($stmt_images->fetchAll(PDO::FETCH_ASSOC) as $image) { ?>
-                    <div class="container">
-                        <img src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <?php
+                        $x = 0;
+                        foreach ($stmt_images->fetchAll(PDO::FETCH_ASSOC) as $image) {
+
+                            if($x == 0) {
+                                ?>
+                                <div class="carousel-item active">
+                                    <img src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
+                                </div>
+                                <?php
+                            } else {
+                                ?>
+                                <div class="carousel-item">
+                                    <img src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
+                                </div>
+                                <?php
+                            }
+
+                        }
+                        ?>
+
                     </div>
-                <?php
-                }
-                 ?>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+
 
                 <br>
                 <button type="submit" class="btn btn-primary">Login</button>
