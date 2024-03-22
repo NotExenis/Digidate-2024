@@ -66,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ));
             header('location:../index.php?page=login');
         } else {
+
             $sql2 = "INSERT INTO tbl_users(users_username,users_preposition,users_first_name, users_last_name, users_email, users_password,
                     users_gender_id,users_city, users_date_of_birth, users_phonenumber, users_is_admin, users_first_login)
                     VALUES(:username, :firstname, :users_preposition, :lastname, :email, :password, :gender, :city, :dob,  :phone, :isadmin, :firsttime)";

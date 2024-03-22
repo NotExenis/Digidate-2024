@@ -1,6 +1,15 @@
+
 <?php
+require 'functions/errormessage.php';
+
+if(isset($_SESSION['error_message'])) {
+    //print_r($_SESSION);
+    errormessage($_SESSION['error_message']);
+    unset($_SESSION['error_message']);
+}
 
 ?>
+
 <div class="container">
     <div class="row">
         <div class="col-sm">
@@ -15,7 +24,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="preposition">Preposition:</label>
-                    <input type="text" class="form-control" id="preposition" name="preposition" placeholder="Preposition"  required>
+                    <input type="text" class="form-control" id="preposition" name="preposition" placeholder="Preposition" >
                 </div>
                 <div class="mb-3">
                     <label for="last_name">Last Name:</label>
