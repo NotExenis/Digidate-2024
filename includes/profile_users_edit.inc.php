@@ -198,7 +198,6 @@ $stmt_user_education->execute();
                         <?php
                         $x = 0;
                         foreach ($stmt_images->fetchAll(PDO::FETCH_ASSOC) as $image) {
-
                             if($x == 0) {
                                 ?>
                                 <div class="carousel-item active">
