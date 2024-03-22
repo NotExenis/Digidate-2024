@@ -6,6 +6,7 @@ if(isset($_SESSION['users_role'])){
         );
     } elseif ($_SESSION['users_role'] == '0'){ //Admin
         $navitems = array(
+            array('profile_users', 'Meet users'),
             array('logout', 'Logout'),
         );
     } 

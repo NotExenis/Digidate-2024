@@ -21,7 +21,7 @@
         <div class="col-sm">
             <br>
             <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="./photos/edate.png" alt="edate">
+                <img class="card-img-top" src="./photos/image.png" alt="edate">
                 <div class="card-body">
                     <h5 class="card-title">Digidate</h5>
                     <p class="card-text">Welcome to Digidate find your lover now!</p>
