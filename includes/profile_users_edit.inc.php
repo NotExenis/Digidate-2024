@@ -5,17 +5,21 @@ if (isset($_SESSION['notification'])) {
     echo '<p class="text-red-500">' . $_SESSION['notification'] . '</p>';
     unset($_SESSION['notification']);
 }
-$sql_location = "SELECT municipality_name, municipality_id
-                 FROM tbl_municipalities";
-$stmt_location = $db->prepare($sql_location);
-$stmt_location->execute();
+
+
+$sql_user_info = "SELECT * FROM tbl_users WHERE users_id = :user_id";
+$stmt_user_info = $db->prepare($sql_user_info);
+$stmt_user_info->bindParam(":user_id", $_SESSION['users_id']);
+$stmt_user_info->execute();
+$user_info = $stmt_user_info->fetch(PDO::FETCH_ASSOC);
+
 
 $sql_education = "SELECT education_name 
                  FROM tbl_education";
 $stmt_education = $db->prepare($sql_education);
 $stmt_education->execute();
 
-$sql_tags = "SELECT tags_title, tags_id 
+$sql_tags = "SELECT tags_title, tags_id, tags_color
                  FROM tbl_tags";
 $stmt_tags = $db->prepare($sql_tags);
 $stmt_tags->execute();
@@ -25,6 +29,7 @@ $stmt_usertags = $db->prepare($sql_usertags);
 $stmt_usertags->bindParam(":user_id", $_SESSION['users_id']);
 $stmt_usertags->execute();
 $usertags = $stmt_usertags->fetchAll(PDO::FETCH_ASSOC);
+
 
 $sql_images = "SELECT * FROM tbl_images WHERE images_user_id = :user_id";
 $stmt_images = $db->prepare($sql_images);
@@ -37,8 +42,30 @@ $stmt_user_education->bindParam(":user_id", $_SESSION['users_id']);
 $stmt_user_education->execute();
 ?>
 <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the button element
+        var openModalButton = document.getElementById('openModalButton');
+
+        // Add a click event listener to the button
+        openModalButton.addEventListener('click', function() {
+            // Use jQuery to trigger the modal display
+            $('#tags_modal').modal('show');
+        });
+
+        // Get the close buttons within the modal
+        var modalCloseButtons = document.querySelectorAll('#tags_modal .btn-close, #tags_modal [data-bs-dismiss="modal"]');
+
+        // Add click event listeners to each close button
+        modalCloseButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Use jQuery to close the modal
+                $('#tags_modal').modal('hide');
+            });
+        });
+    });
+
     $(document).ready(function() {
-        $("#tag_modal").hide();
         $("#image").on("change", function() {
             if ($("#image")[0].files.length > 5) {
                 alert("You can select only 5 images");
@@ -46,71 +73,34 @@ $stmt_user_education->execute();
             }
         });
     });
-    $("#add_tag").on("click", function() {
-        $("#tag_modal").show(); // Show the tag_modal div when add_tag button is clicked
-    });
-    $('#close').on('click', function() {
-        $('#error').hide();
-    });
 
-    const element = document.getElementById("add_tag");
-    element.addEventListener("click", myFunction);
+    function toggleTagSelection(tagId) {
+        prompt(tagId);
+        var badge = document.querySelector('[data-tag-id="' + tagId + '"]');
+        var isChosen = badge.querySelector('.bg-success') !== null;
 
-    function myFunction() {
-        document.getElementById("tag_modal").innerHTML = "multiFormTags()";
+        if (isChosen) {
+            // If tag is already chosen, remove it
+            badge.querySelector('.bg-success').remove();
+        } else {
+            // If tag is not chosen, add it
+            badge.innerHTML += '<span class="badge bg-success">Chosen</span>';
+        }
     }
+
 </script>
 
-<?php
-?>
-<div id="tag_modal"></div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-
-        </div>
-        <div class="col-sm">
-            <form method="POST" enctype="multipart/form-data" action="php/photo_upload.php">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" name="email" placeholder="Enter email" >
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" >
-                </div>
-                <div class="mb-3">
-                    <label for="location" class="form-label">Location</label>
-                    <select class="form-select" name="language">
-                        <?php foreach ($stmt_location->fetchAll(PDO::FETCH_ASSOC) as $location) { ?>
-                            <option value="<?=$location['municipality_id']?>"><?= $location['municipality_name'] ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                <?php //fix dit nog aub ?>
-                <div class="mb-3">
-                    <label for="education" class="form-label">Education</label>
-                    <select class="form-select" name="education" >
-                        <?php foreach($stmt_education as $education){
-
-                            if($education['education_name'] == $stmt_user_education->fetch()) {
-                                ?>
-                                <option disabled><?= $education['education_name']?></option>
-
-                                <?php
-                            } else {
-                                ?>
-                                <option><?= $education['education_name']?></option>
-
-                                <?php
-                            }
-                            ?>
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="education" class="form-label">Tags</label>
+<!-- Modal -->
+<div class="modal fade" id="tags_modal" tabindex="-1" aria-labelledby="tags_modal_label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Tags</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <label for="Tags" class="form-label">Chosen Tags</label>
                     <div class="container">
                         <?php foreach($usertags as $tags){
                             $color = isset($tags["tags_color"]) ? $tags["tags_color"] : "blue";
@@ -119,7 +109,84 @@ $stmt_user_education->execute();
                         </span>
                         <?php }
                         ?>
-                        <badge id="add_tag" class="bi bi-plus bg-primary p-2 badge-clickable" onclick="">Add tag</badge>
+                    </div>
+                    <hr class="rounded">
+                    <div class="container">
+                        <?php foreach($stmt_tags->fetchAll(PDO::FETCH_ASSOC) as $tags){
+                            $color = isset($tags["tags_color"]) ? $tags["tags_color"] : "blue";
+                            $tagId = $tags['tags_id'];
+                            $tagChosen = false; // Initialize as false
+
+                            // Check if the current tag ID exists in the user's chosen tags
+                            foreach ($usertags as $usertag) {
+                                if ($usertag['tags_id'] == $tagId) {
+                                    $tagChosen = true;
+                                    break; // If found, no need to continue searching
+                                }
+                            }
+                            if(!$tagChosen) {
+                                ?>
+                                <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" onclick="toggleTagSelection(<?= $tagId ?>)"><?= $tags['tags_title'] ?></span>
+                                <input type="checkbox" hidden name="tags[]" value="<?= $tagId ?>" ><?= $tagId ?>
+                                <?php
+                                 }  ?>
+                        <?php }
+                        ?>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+        </div>
+        <div class="col-sm">
+
+            <h5>Edit Profile</h5>
+            <h5><?= $user_info['users_username'] ?></h5>
+
+            <form method="POST" enctype="multipart/form-data" action="php/photo_upload.php">
+
+                <?php //fix dit nog aub ?>
+                <div class="mb-3">
+                    <label for="education" class="form-label">Education</label>
+                    <select class="form-select" name="education" >
+                        <?php foreach ($stmt_education->fetchAll(PDO::FETCH_ASSOC) as $education) {
+
+                            if($stmt_user_education->fetch() == $education['education_name']) {
+                                ?>
+                                <option disabled><?= $education['education_name']?></option>
+                                <?php
+                            } else {
+                                ?>
+                                <option><?= $education['education_name']?></option>
+                                <?php
+                            }
+                            ?>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="Tags" class="form-label">Tags</label>
+                    <div class="container">
+                        <?php foreach($usertags as $tags){
+                            $color = isset($tags["tags_color"]) ? $tags["tags_color"] : "blue";
+                            ?>
+                            <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $tags['tags_title'] ?>
+                        </span>
+                        <?php }
+                        ?>
+
+                        <button type="button" class="btn btn-primary" id="openModalButton">
+                            Open Modal
+                        </button>
                     </div>
                     </select>
                 </div>
