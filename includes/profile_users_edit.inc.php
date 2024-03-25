@@ -12,7 +12,7 @@ $stmt_user_info->bindParam(":user_id", $_SESSION['users_id']);
 $stmt_user_info->execute();
 $user_info = $stmt_user_info->fetch(PDO::FETCH_ASSOC);
 
-$sql_education = "SELECT education_name 
+$sql_education = "SELECT education_name, education_id 
                  FROM tbl_education";
 $stmt_education = $db->prepare($sql_education);
 $stmt_education->execute();
@@ -157,11 +157,11 @@ $stmt_user_education->execute();
 
                             if($stmt_user_education->fetch() == $education['education_name']) {
                                 ?>
-                                <option disabled><?= $education['education_name']?></option>
+                                <option value="<?= $education['education_id'] ?>" disabled><?= $education['education_name']?></option>
                                 <?php
                             } else {
                                 ?>
-                                <option><?= $education['education_name']?></option>
+                                <option value="<?= $education['education_id'] ?>"><?= $education['education_name']?></option>
                                 <?php
                             }
                             ?>

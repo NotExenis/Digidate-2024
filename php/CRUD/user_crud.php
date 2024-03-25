@@ -9,7 +9,8 @@ if(isset($_POST['user_edit'])) {
     foreach($_POST as $input) {
         if($input = 'user_edit') {
             foreach($_POST as $key => $value) {
-                $column = editProfile($key, $value, $_SESSION['users_id']);
+                $column = $key;
+                    editProfile($key, $value, $_SESSION['users_id']);
             }
         }
     }
