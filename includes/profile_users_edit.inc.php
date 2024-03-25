@@ -6,13 +6,11 @@ if (isset($_SESSION['notification'])) {
     unset($_SESSION['notification']);
 }
 
-
 $sql_user_info = "SELECT * FROM tbl_users WHERE users_id = :user_id";
 $stmt_user_info = $db->prepare($sql_user_info);
 $stmt_user_info->bindParam(":user_id", $_SESSION['users_id']);
 $stmt_user_info->execute();
 $user_info = $stmt_user_info->fetch(PDO::FETCH_ASSOC);
-
 
 $sql_education = "SELECT education_name 
                  FROM tbl_education";
@@ -40,6 +38,7 @@ $sql_user_education = "SELECT education_name FROM tbl_users INNER JOIN tbl_users
 $stmt_user_education = $db->prepare($sql_user_education);
 $stmt_user_education->bindParam(":user_id", $_SESSION['users_id']);
 $stmt_user_education->execute();
+
 ?>
 <script>
 
@@ -73,21 +72,16 @@ $stmt_user_education->execute();
             }
         });
     });
+    $(document).ready(function() {
+        // Click event handler for clickable badges
+        $('.badge-clickable').click(function() {
+            // Get the associated checkbox
+            var checkbox = $(this).prev('input[type="checkbox"]');
 
-    function toggleTagSelection(tagId) {
-        prompt(tagId);
-        var badge = document.querySelector('[data-tag-id="' + tagId + '"]');
-        var isChosen = badge.querySelector('.bg-success') !== null;
-
-        if (isChosen) {
-            // If tag is already chosen, remove it
-            badge.querySelector('.bg-success').remove();
-        } else {
-            // If tag is not chosen, add it
-            badge.innerHTML += '<span class="badge bg-success">Chosen</span>';
-        }
-    }
-
+            // Toggle the checkbox's checked state
+            checkbox.prop('checked', !checkbox.prop('checked'));
+        });
+    });
 </script>
 
 <!-- Modal -->
@@ -99,16 +93,18 @@ $stmt_user_education->execute();
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="php/CRUD/user_crud.php" method="post">
                     <label for="Tags" class="form-label">Chosen Tags</label>
                     <div class="container">
                         <?php foreach($usertags as $tags){
                             $color = isset($tags["tags_color"]) ? $tags["tags_color"] : "blue";
                             ?>
-                            <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $tags['tags_title'] ?>
-                        </span>
-                        <?php }
-                        ?>
+                            <!-- Add hidden checkbox -->
+                            <input type="checkbox" name="uncheck_tags[]" value="<?= $tags['tags_id'] ?>" style="display: none;">
+                            <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" data-tag-id="<?= $tags['tags_id'] ?>">
+                <?= $tags['tags_title'] ?>
+            </span>
+                        <?php } ?>
                     </div>
                     <hr class="rounded">
                     <div class="container">
@@ -126,23 +122,23 @@ $stmt_user_education->execute();
                             }
                             if(!$tagChosen) {
                                 ?>
-                                <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" onclick="toggleTagSelection(<?= $tagId ?>)"><?= $tags['tags_title'] ?></span>
-                                <input type="checkbox" hidden name="tags[]" value="<?= $tagId ?>" ><?= $tagId ?>
-                                <?php
-                                 }  ?>
-                        <?php }
-                        ?>
+                                <!-- Add hidden checkbox -->
+                                <input type="checkbox" name="chosen_tags[]" value="<?= $tagId ?>" style="display: none;">
+                                <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" data-tag-id="<?= $tagId ?>">
+                    <?= $tags['tags_title'] ?>
+                </span>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
-
 <div class="container">
     <div class="row">
         <div class="col-sm">
@@ -153,7 +149,6 @@ $stmt_user_education->execute();
             <h5><?= $user_info['users_username'] ?></h5>
 
             <form method="POST" enctype="multipart/form-data" action="php/photo_upload.php">
-
                 <?php //fix dit nog aub ?>
                 <div class="mb-3">
                     <label for="education" class="form-label">Education</label>
@@ -185,7 +180,7 @@ $stmt_user_education->execute();
                         ?>
 
                         <button type="button" class="btn btn-primary" id="openModalButton">
-                            Open Modal
+                            Edit Tags
                         </button>
                     </div>
                     </select>
