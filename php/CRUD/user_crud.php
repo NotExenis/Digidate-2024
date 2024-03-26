@@ -43,20 +43,6 @@ function editProfile($column, $value, $user_id) {
         echo "ja";
         foreach ($_FILES['image']['tmp_name'] as $key => $tmp_name) {
 
-            $sql_check_images = "SELECT COUNT(*)
-                                FROM tbl_images i
-                                JOIN tbl_users u ON i.images_user_id = u.users_id
-                                WHERE u.users_id = :user_id
-                                INTO @image_count;
-                                
-                                -- Check if the user has reached the maximum allowed limit (5 in this case)
-                                IF @image_count < 5 THEN
-                                    -- Proceed with the insertion
-                                    INSERT INTO tbl_images (images_user_id, images_image) VALUES (:user_id, :image);
-                                ELSE
-                                    -- Prevent the insertion
-                                    SELECT 'User has reached the maximum allowed number of images' AS Error;
-                                END IF;";
 
             $pic = ($_FILES['image']['tmp_name'][$key]) ? base64_encode(file_get_contents($_FILES['image']['tmp_name'][$key])) : null;
 

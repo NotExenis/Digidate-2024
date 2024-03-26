@@ -156,7 +156,7 @@ $stmt_images->execute();
                 ?>
                 <div class="mb-3">
                     <label for="location" class="form-label">Location *</label>
-                    <select class="form-select" name="users_education_id" required>
+                    <select class="form-select" name="location" required>
                         <?php
                         if ($currenteducation_id > 0) {
                             ?>
@@ -182,7 +182,9 @@ $stmt_images->execute();
                             ?>
                             <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $tags['tags_title'] ?>
                         </span>
-                        <?php } ?>
+                        <?php }
+                        ?>
+
                         <button type="button" class="btn btn-primary" id="openModalButton">
                             Edit Tags
                         </button>
@@ -190,7 +192,9 @@ $stmt_images->execute();
                     </select>
                 </div>
                 <div class="form-group mb-3 mt-3">
-                    <textarea class="p-200" name="users_description" ><?= $user_info['users_description'] ?></textarea>
+
+                    <textarea name="users_description" ><?= $user_info['users_description'] ?></textarea>
+
                 </div>
                 <div class="form-group mb-3 mt-3">
                     Upload this file: <input type=file name="image[]" id="image" multiple="multiple" accept="image/jpeg, image/jpg, image/png">
