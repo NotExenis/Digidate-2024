@@ -74,36 +74,35 @@ $stmt_user_education->execute();
             <form method="POST" enctype="multipart/form-data" action="php/photo_upload.php">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" name="email" placeholder="Enter email" >
+                    <input type="email" class="form-control" name="email" placeholder="Enter email">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" >
+                    <input type="password" class="form-control" id="password" name="password">
                 </div>
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
                     <select class="form-select" name="language">
                         <?php foreach ($stmt_location->fetchAll(PDO::FETCH_ASSOC) as $location) { ?>
-                            <option value="<?=$location['municipality_id']?>"><?= $location['municipality_name'] ?></option>
+                            <option value="<?= $location['municipality_id'] ?>"><?= $location['municipality_name'] ?></option>
                         <?php } ?>
                     </select>
                 </div>
-                <?php //fix dit nog aub ?>
                 <div class="mb-3">
                     <label for="education" class="form-label">Education</label>
-                    <select class="form-select" name="education" >
-                        <?php foreach($stmt_education as $education){
+                    <select class="form-select" name="education">
+                        <?php foreach ($stmt_education as $education) {
 
-                            if($education['education_name'] == $stmt_user_education->fetch()) {
-                                ?>
-                                <option disabled><?= $education['education_name']?></option>
+                            if ($education['education_name'] == $stmt_user_education->fetch()) {
+                        ?>
+                                <option disabled><?= $education['education_name'] ?></option>
 
-                                <?php
+                            <?php
                             } else {
-                                ?>
-                                <option><?= $education['education_name']?></option>
+                            ?>
+                                <option><?= $education['education_name'] ?></option>
 
-                                <?php
+                            <?php
                             }
                             ?>
                         <?php } ?>
@@ -112,11 +111,11 @@ $stmt_user_education->execute();
                 <div class="mb-3">
                     <label for="education" class="form-label">Tags</label>
                     <div class="container">
-                        <?php foreach($usertags as $tags){
+                        <?php foreach ($usertags as $tags) {
                             $color = isset($tags["tags_color"]) ? $tags["tags_color"] : "blue";
-                            ?>
+                        ?>
                             <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $tags['tags_title'] ?>
-                        </span>
+                            </span>
                         <?php }
                         ?>
                         <badge id="add_tag" class="bi bi-plus bg-primary p-2 badge-clickable" onclick="">Add tag</badge>
@@ -132,20 +131,20 @@ $stmt_user_education->execute();
                         $x = 0;
                         foreach ($stmt_images->fetchAll(PDO::FETCH_ASSOC) as $image) {
 
-                            if($x == 0) {
-                                ?>
+                            if ($x == 0) {
+                        ?>
                                 <div class="carousel-item active">
                                     <img class="d-block w-200" src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
                                 </div>
-                                <?php
+                            <?php
                             } else {
-                                ?>
+                            ?>
                                 <div class="carousel-item">
                                     <img class="d-block w-200" src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
                                 </div>
-                                <?php
+                        <?php
                             }
-                        $x++;
+                            $x++;
                         }
                         ?>
                     </div>

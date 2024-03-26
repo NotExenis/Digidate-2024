@@ -15,6 +15,8 @@ $total_pages = ceil($total_rows / $limit);
 $sql = "SELECT * FROM tbl_users LIMIT $start, $limit";
 $stmt = $db->prepare($sql);
 $stmt->execute();
+
+
 ?>
 
 <div class="container">
@@ -62,13 +64,14 @@ $stmt->execute();
                         <?php } ?>
                         <div class="card-body">
                             <h5 class="card-title" style="font-size: 16px; margin-bottom: 5px;"><?= $r['users_first_name'] ?></h5>
-                            <p class="card-text" style="font-size: 14px; margin-bottom: 5px;">Some quick example text to build on the card title.</p>
+                            <p class="card-text" style="font-size: 14px; margin-bottom: 5px;"><?= $r['users_description'] ?></p>
                             <button type="button" class="btn btn-danger" style="font-size: 14px;">
                                 <i class="bi bi-x"></i> Dislike
                             </button>
-                            <button type="button" class="btn btn-success ms-1" style="font-size: 14px;">
-                                <i class="bi bi-heart"></i> Like
-                            </button>
+                            <form action="index.php?page=open_user" method="post">
+                                <button class="btn btn-info">Open profile</button>
+                                <input type="hidden" name="user_id" value="<?= $r['users_id'] ?>">
+                            </form>
                         </div>
                     </div>
                 </div>
