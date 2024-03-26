@@ -2,9 +2,14 @@
 session_start();
 require '../private/conn.php';
 
+echo "<pre>", print_r($_FILES), "</pre>";
+function addPhotoToUser($pic, $user_id) {
 
-if ($_FILES) {
+}
+if($_FILES['image']['tmp_name'][0] != NULL) {
+    echo "ja";
     foreach ($_FILES['image']['tmp_name'] as $key => $tmp_name) {
+
         $pic = ($_FILES['image']['tmp_name'][$key]) ? base64_encode(file_get_contents($_FILES['image']['tmp_name'][$key])) : null;
 
         $sql_insert_photo = "INSERT INTO tbl_images (images_user_id, images_image) VALUES (:user_id, :image)";
@@ -12,13 +17,12 @@ if ($_FILES) {
         $stmt_insert_photo->bindParam(":user_id", $_SESSION['users_id']);
         $stmt_insert_photo->bindParam(":image", $pic);
         $stmt_insert_photo->execute();
-
+        }
         ?>
         <img src="data:image/jpeg;base64, <?= $pic ?> " style="max-width: 200px" />
         <?php
-
-    }
-
+}else{
+    echo "nee";
 }
 
 

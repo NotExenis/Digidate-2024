@@ -4,20 +4,21 @@
 include '../audit_trail.php';
 
 session_start();
-
+//var_dump($_POST);
 if(isset($_POST['user_edit'])) {
+    var_dump($_POST);
     foreach($_POST as $input) {
         if($input = 'user_edit') {
+            unset($_POST['user_edit']);
             foreach($_POST as $key => $value) {
                 $column = $key;
+
                     editProfile($key, $value, $_SESSION['users_id']);
             }
         }
     }
     header('Location: ../../index.php?page=profile_users_edit');
-
 }
-
 if(isset($_POST['uncheck_tags'])) {
     foreach($_POST['uncheck_tags'] as $tags) {
         removeTagsFromUser($tags, $_SESSION['users_id']);
@@ -37,12 +38,41 @@ if(isset($_POST['chosen_tags'])) {
 function editProfile($column, $value, $user_id) {
     require '../../private/conn.php';
 
+    //Image Add
+    if($_FILES['image']['tmp_name'][0] != NULL) {
+        echo "ja";
+        foreach ($_FILES['image']['tmp_name'] as $key => $tmp_name) {
+
+            $sql_check_images = "SELECT COUNT(*)
+                                FROM tbl_images i
+                                JOIN tbl_users u ON i.images_user_id = u.users_id
+                                WHERE u.users_id = :user_id
+                                INTO @image_count;
+                                
+                                -- Check if the user has reached the maximum allowed limit (5 in this case)
+                                IF @image_count < 5 THEN
+                                    -- Proceed with the insertion
+                                    INSERT INTO tbl_images (images_user_id, images_image) VALUES (:user_id, :image);
+                                ELSE
+                                    -- Prevent the insertion
+                                    SELECT 'User has reached the maximum allowed number of images' AS Error;
+                                END IF;";
+
+            $pic = ($_FILES['image']['tmp_name'][$key]) ? base64_encode(file_get_contents($_FILES['image']['tmp_name'][$key])) : null;
+
+            $sql_insert_photo = "INSERT INTO tbl_images (images_user_id, images_image) VALUES (:user_id, :image)";
+            $stmt_insert_photo = $db->prepare($sql_insert_photo);
+            $stmt_insert_photo->bindParam(":user_id", $_SESSION['users_id']);
+            $stmt_insert_photo->bindParam(":image", $pic);
+            $stmt_insert_photo->execute();
+        }
+    }
+
     $sql_edit_profile = 'UPDATE tbl_users SET '  . $column . ' = :value WHERE users_id = :users_id';
     $sth_edit_profile = $db->prepare($sql_edit_profile);
     $sth_edit_profile->bindParam(":value", $value);
     $sth_edit_profile->bindParam(":users_id", $user_id);
     $sth_edit_profile->execute();
-
 }
 
 function addTagsToUser($tag_id, $user_id) {

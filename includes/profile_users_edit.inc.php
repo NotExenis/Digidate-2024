@@ -11,6 +11,19 @@ $stmt_user_info = $db->prepare($sql_user_info);
 $stmt_user_info->bindParam(":user_id", $_SESSION['users_id']);
 $stmt_user_info->execute();
 $user_info = $stmt_user_info->fetch(PDO::FETCH_ASSOC);
+//echo "<pre>", print_r($user_info), "</pre>";
+$currenteducation_id = $user_info['users_education_id'];
+
+$sql_currenteducation = "SELECT education_name
+FROM tbl_education
+WHERE education_id=:education_id";
+$stmt_currenteducation = $db->prepare($sql_currenteducation);
+$stmt_currenteducation->bindParam(':education_id', $currenteducation_id);
+$stmt_currenteducation->execute();
+if ($row1 = $stmt_currenteducation->fetch(PDO::FETCH_ASSOC)) {
+    $currenteducation = $row1['education_name'];
+}
+var_dump($currenteducation_id);
 
 $sql_education = "SELECT education_name, education_id 
                  FROM tbl_education";
@@ -34,27 +47,18 @@ $stmt_images = $db->prepare($sql_images);
 $stmt_images->bindParam(":user_id", $_SESSION['users_id']);
 $stmt_images->execute();
 
-$sql_user_education = "SELECT education_name FROM tbl_users INNER JOIN tbl_users_education ON users_education_users_id = users_id INNER JOIN tbl_education ON education_id = users_education_id WHERE users_id = :user_id";
-$stmt_user_education = $db->prepare($sql_user_education);
-$stmt_user_education->bindParam(":user_id", $_SESSION['users_id']);
-$stmt_user_education->execute();
-
 ?>
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
         // Get the button element
         var openModalButton = document.getElementById('openModalButton');
-
         // Add a click event listener to the button
         openModalButton.addEventListener('click', function() {
             // Use jQuery to trigger the modal display
             $('#tags_modal').modal('show');
         });
-
         // Get the close buttons within the modal
         var modalCloseButtons = document.querySelectorAll('#tags_modal .btn-close, #tags_modal [data-bs-dismiss="modal"]');
-
         // Add click event listeners to each close button
         modalCloseButtons.forEach(function(button) {
             button.addEventListener('click', function() {
@@ -63,7 +67,6 @@ $stmt_user_education->execute();
             });
         });
     });
-
     $(document).ready(function() {
         $("#image").on("change", function() {
             if ($("#image")[0].files.length > 5) {
@@ -77,8 +80,8 @@ $stmt_user_education->execute();
         $('.badge-clickable').click(function() {
             // Get the associated checkbox
             var checkbox = $(this).prev('input[type="checkbox"]');
-
             // Toggle the checkbox's checked state
+            badge.prop('style="border"')
             checkbox.prop('checked', !checkbox.prop('checked'));
         });
     });
@@ -89,7 +92,7 @@ $stmt_user_education->execute();
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Tags</h5>
+                <h5 class="modal-title" id="exampleModalLabel" >Add Tags</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -144,28 +147,31 @@ $stmt_user_education->execute();
         <div class="col-sm">
         </div>
         <div class="col-sm">
-
             <h5>Edit Profile</h5>
             <h5><?= $user_info['users_username'] ?></h5>
 
-            <form method="POST" enctype="multipart/form-data" action="php/photo_upload.php">
-                <?php //fix dit nog aub ?>
+            <form method="POST" enctype="multipart/form-data" action="php/CRUD/user_crud.php">
+                <?php //fix dit nog aub
+                print_r($currenteducation_id);
+                ?>
                 <div class="mb-3">
-                    <label for="education" class="form-label">Education</label>
-                    <select class="form-select" name="education" >
-                        <?php foreach ($stmt_education->fetchAll(PDO::FETCH_ASSOC) as $education) {
-
-                            if($stmt_user_education->fetch() == $education['education_name']) {
-                                ?>
-                                <option value="<?= $education['education_id'] ?>" disabled><?= $education['education_name']?></option>
-                                <?php
-                            } else {
-                                ?>
-                                <option value="<?= $education['education_id'] ?>"><?= $education['education_name']?></option>
+                    <label for="location" class="form-label">Location *</label>
+                    <select class="form-select" name="users_education_id" required>
+                        <?php
+                        if ($currenteducation_id > 0) {
+                            ?>
+                            <option selected disabled value="<?= $currenteducation_id ?>"><?= $currenteducation ?></option>
+                            <?php foreach ($stmt_education->fetchAll(PDO::FETCH_ASSOC) as $education) { ?>
+                                <option value="<?=$education['education_id']?>"><?= $education['education_name'] ?></option>
+                            <?php }
+                        } else{
+                            ?>
+                            <?php foreach ($stmt_education->fetchAll(PDO::FETCH_ASSOC) as $education) { ?>
+                                <option value="<?=$education['education_id']?>"><?= $education['education_name'] ?></option>
                                 <?php
                             }
-                            ?>
-                        <?php } ?>
+                        }
+                        ?>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -176,14 +182,15 @@ $stmt_user_education->execute();
                             ?>
                             <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $tags['tags_title'] ?>
                         </span>
-                        <?php }
-                        ?>
-
+                        <?php } ?>
                         <button type="button" class="btn btn-primary" id="openModalButton">
                             Edit Tags
                         </button>
                     </div>
                     </select>
+                </div>
+                <div class="form-group mb-3 mt-3">
+                    <textarea class="p-200" name="users_description" ><?= $user_info['users_description'] ?></textarea>
                 </div>
                 <div class="form-group mb-3 mt-3">
                     Upload this file: <input type=file name="image[]" id="image" multiple="multiple" accept="image/jpeg, image/jpg, image/png">
@@ -222,7 +229,8 @@ $stmt_user_education->execute();
 
 
                 <br>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <input type="hidden" name="user_edit">
             </form>
         </div>
         <div class="col-sm">
