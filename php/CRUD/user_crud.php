@@ -30,6 +30,24 @@ if(isset($_POST['chosen_tags'])) {
     header('Location: ../../index.php?page=profile_users_edit');
 }
 
+if( isset($_POST['getColor'])){
+    $tag_id = $_POST['getColor'];
+    $query = "SELECT * FROM tbl_tags WHERE tags_id=:tags_id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':tags_id', $tag_id);
+    if($stmt->execute()){
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $tagcolor= $row['tags_color'];
+            echo $tagcolor;
+        }else {
+            echo "error";
+        }
+
+    }else {
+        echo "error";
+    }
+}
+
 
 function editProfile($column, $value, $user_id) {
     require '../../private/conn.php';

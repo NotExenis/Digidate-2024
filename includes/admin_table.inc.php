@@ -1,5 +1,6 @@
 <?php
 include 'private/conn.php';
+require 'functions/popupmessage.php';
 
 $sql_admin_select = "SELECT users_id, users_first_name, users_preposition, users_last_name, users_email, users_is_admin, users_creation_date FROM tbl_users WHERE users_is_admin = ". $_SESSION['users_role'] . " ";
 //$sql_admin_select = "SELECT users_id, users_first_name, users_preposition, users_last_name, users_email, users_is_admin, users_creation_date FROM tbl_users WHERE users_is_admin = 1 ";
@@ -13,7 +14,8 @@ $sth_admin_select->execute();
         <div class="col-3">
         </div>
         <div class="col-9">
-            <h1>Admin Table        <a href="index.php?page=admin_insert"><button class="btn btn-primary" >INSERT</button></a>
+            <h1>Admin Table
+                <a href="index.php?page=admin_insert"><button class="btn btn-primary" >INSERT</button></a>
             </h1>
 
             <table>
@@ -37,7 +39,14 @@ $sth_admin_select->execute();
                            if($_SESSION['users_role'] == 1) {
                                ?>
                                <form action="index.php?page=admin_edit" method="post"><td><button class="btn btn-primary" type="submit" name="admin_edit" value="<?= $row['users_id'] ?>">EDIT</button></td></form>
-                               <form action="php/CRUD/admin_crud.php" method="post"><td><button class="btn btn-primary" type="submit" name="admin_delete" value="<?= $row['users_id'] ?>">Delete</button></td></form>
+                               <form action="php/CRUD/admin_crud.php" method="post">
+                                   <?php if(isset($_SESSION['notification'])) {
+                                       $error = $_SESSION['notification'];
+                                       popupmessage('Are you sure?', $error, 'Continue');
+                                       unset($_SESSION['notification']);
+                                   } ?>
+                                   <td><button class="btn btn-primary" type="submit" name="admin_delete" value="<?= $row['users_id'] ?>">Delete</button></td>
+                               </form>
                     <?php
                            }
                         }

@@ -23,7 +23,7 @@ $stmt_currenteducation->execute();
 if ($row1 = $stmt_currenteducation->fetch(PDO::FETCH_ASSOC)) {
     $currenteducation = $row1['education_name'];
 }
-//var_dump($currenteducation_id);
+var_dump($currenteducation_id);
 
 $sql_education = "SELECT education_name, education_id 
                  FROM tbl_education";
@@ -77,23 +77,32 @@ $stmt_images->execute();
         });
     });
     $(document).ready(function() {
-
         // Click event handler for clickable badges
         $('.badge-clickable').click(function() {
+            $(this).toggleClass('chosen');
+
+            // If the element is chosen, set border properties
+            if ($(this).hasClass('chosen')) {
+                $(this).css({
+                    'border-style' : 'solid',
+                    'border-width': 'medium',
+                });
+                $(this).css('border-color', 'blue');
+            } else {
+                // If the element is not chosen, reset border properties
+                $(this).css({
+                    'border-style' : '',
+                    'border-width': '',
+                });
+                $(this).css('color', 'white'); // Reset color
+            }
             var max = 3;
             // Get the associated checkbox
             var checkbox = $(this).prev('input[type="checkbox"]');
             // Toggle the checkbox's checked state
             checkbox.prop('checked', !checkbox.prop('checked'));
         });
-    });
-    jQuery(function(){
-        var checkboxes = $('input[type="checkbox"]');
 
-        checkboxes.change(function(){
-            var current = checkboxes.filter(':checked').length;
-            checkboxes.filter(':not(:checked)').prop('disabled', current >= max);
-        });
     });
 </script>
 
@@ -114,9 +123,9 @@ $stmt_images->execute();
                             ?>
                             <!-- Add hidden checkbox -->
                             <input type="checkbox" name="uncheck_tags[]" value="<?= $tags['tags_id'] ?>" style="display: none;">
-                            <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" data-tag-id="<?= $tags['tags_id'] ?>">
+                            <div class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" data-tag-id="<?= $tags['tags_id'] ?>">
                 <?= $tags['tags_title'] ?>
-            </span>
+            </div>
                         <?php } ?>
                     </div>
                     <hr class="rounded">
@@ -137,9 +146,9 @@ $stmt_images->execute();
                                 ?>
                                 <!-- Add hidden checkbox -->
                                 <input type="checkbox" name="chosen_tags[]" value="<?= $tagId ?>" style="display: none;">
-                                <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" data-tag-id="<?= $tagId ?>">
+                                <div class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" data-tag-id="<?= $tagId ?>">
                     <?= $tags['tags_title'] ?>
-                </span>
+                </div>
                             <?php } ?>
                         <?php } ?>
                     </div>
@@ -162,7 +171,7 @@ $stmt_images->execute();
 
             <form method="POST" enctype="multipart/form-data" action="php/CRUD/user_crud.php">
                 <?php //fix dit nog aub
-                print_r($currenteducation_id);
+                //print_r($currenteducation_id);
                 ?>
                 <div class="mb-3">
                     <label for="users_education_id" class="form-label">Education</label>
@@ -190,7 +199,7 @@ $stmt_images->execute();
                         <?php foreach($usertags as $tags){
                             $color = isset($tags["tags_color"]) ? $tags["tags_color"] : "blue";
                             ?>
-                            <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>"><?= $tags['tags_title'] ?>
+                            <span class="badge rounded-fill badge-clickable"  style="background-color: <?= $color ?>"><?= $tags['tags_title'] ?>
                         </span>
                         <?php }
                         ?>
