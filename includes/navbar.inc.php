@@ -8,6 +8,7 @@ if(isset($_SESSION['users_role'])){
         );
     } elseif ($_SESSION['users_role'] == '0'){ //User
         $navitems = array(
+            array('profile_users', 'Meet users'),
             array('logout', 'Logout'),
         );
     } 
