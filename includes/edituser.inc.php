@@ -10,6 +10,14 @@ $sql_location = "SELECT municipality_name
                  FROM tbl_municipalities";
 $stmt_location = $db->prepare($sql_location);
 $stmt_location->execute();
+
+$sql_user_language = "SELECT 
+                 FROM tbl_users_languages
+                 WHERE users_id = :user_id";
+$stmt_user_langauge = $db->prepare($sql_user_language);
+$stmt_user_langauge->bindParam(":user_id", $_SESSION['users_id']);
+$stmt_user_langauge->execute();
+$result = $stmt_user_location->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <script src="./functions/showpass.js"></script>
 

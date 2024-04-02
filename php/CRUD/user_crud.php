@@ -1,18 +1,14 @@
 <?php
-
-
 include '../audit_trail.php';
-
 session_start();
-//var_dump($_POST);
+var_dump($_POST);
 if(isset($_POST['user_edit'])) {
-    var_dump($_POST);
+    //var_dump($_POST);
     foreach($_POST as $input) {
         if($input = 'user_edit') {
             unset($_POST['user_edit']);
             foreach($_POST as $key => $value) {
                 $column = $key;
-
                     editProfile($key, $value, $_SESSION['users_id']);
             }
         }

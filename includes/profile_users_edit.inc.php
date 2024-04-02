@@ -23,7 +23,7 @@ $stmt_currenteducation->execute();
 if ($row1 = $stmt_currenteducation->fetch(PDO::FETCH_ASSOC)) {
     $currenteducation = $row1['education_name'];
 }
-var_dump($currenteducation_id);
+//var_dump($currenteducation_id);
 
 $sql_education = "SELECT education_name, education_id 
                  FROM tbl_education";
@@ -40,6 +40,7 @@ $stmt_usertags = $db->prepare($sql_usertags);
 $stmt_usertags->bindParam(":user_id", $_SESSION['users_id']);
 $stmt_usertags->execute();
 $usertags = $stmt_usertags->fetchAll(PDO::FETCH_ASSOC);
+
 
 
 $sql_images = "SELECT * FROM tbl_images WHERE images_user_id = :user_id";
@@ -76,13 +77,22 @@ $stmt_images->execute();
         });
     });
     $(document).ready(function() {
+
         // Click event handler for clickable badges
         $('.badge-clickable').click(function() {
+            var max = 3;
             // Get the associated checkbox
             var checkbox = $(this).prev('input[type="checkbox"]');
             // Toggle the checkbox's checked state
-            badge.prop('style="border"')
             checkbox.prop('checked', !checkbox.prop('checked'));
+        });
+    });
+    jQuery(function(){
+        var checkboxes = $('input[type="checkbox"]');
+
+        checkboxes.change(function(){
+            var current = checkboxes.filter(':checked').length;
+            checkboxes.filter(':not(:checked)').prop('disabled', current >= max);
         });
     });
 </script>
@@ -155,8 +165,8 @@ $stmt_images->execute();
                 print_r($currenteducation_id);
                 ?>
                 <div class="mb-3">
-                    <label for="location" class="form-label">Location *</label>
-                    <select class="form-select" name="location" required>
+                    <label for="users_education_id" class="form-label">Education</label>
+                    <select class="form-select" name="users_education_id" required>
                         <?php
                         if ($currenteducation_id > 0) {
                             ?>
