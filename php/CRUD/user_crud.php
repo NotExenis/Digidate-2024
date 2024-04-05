@@ -27,6 +27,7 @@ if(isset($_POST['chosen_tags'])) {
         //print_r($tags);
         addTagsToUser($tags, $_SESSION['users_id']);
     }
+
     header('Location: ../../index.php?page=profile_users_edit');
 }
 
@@ -48,6 +49,16 @@ if( isset($_POST['getColor'])){
     }
 }
 
+function CheckTags($user_id) {
+    include '../../private/conn.php';
+
+    $sql_usertags = "SELECT * FROM tbl_usertags WHERE usertags_users_id = :user_id";
+    $stmt_usertags = $db->prepare($sql_usertags);
+    $stmt_usertags->bindParam(":user_id", $_SESSION['users_id']);
+    $stmt_usertags->execute();
+    $usertags = $stmt_usertags->fetch(PDO::FETCH_ASSOC);
+    return $usertags;
+}
 
 function editProfile($column, $value, $user_id) {
     require '../../private/conn.php';
@@ -78,11 +89,24 @@ function editProfile($column, $value, $user_id) {
 function addTagsToUser($tag_id, $user_id) {
     require '../../private/conn.php';
 
-    $sql_add_tag = 'INSERT INTO tbl_usertags (usertags_tags_id, usertags_users_id) VALUES (:value, :user_id)';
-    $sth_add_tag = $db->prepare($sql_add_tag);
-    $sth_add_tag->bindParam(":value", $tag_id);
-    $sth_add_tag->bindParam(":user_id", $user_id);
-    $sth_add_tag->execute();
+    $check_tags = CheckTags($user_id);
+
+    if(isset($check_tags)) {
+        if (array_count_values($check_tags) >= 4) {
+            $_SESSION['notification'] = 'You have tried to add more than the maximum of 5 tags.';
+        }
+
+    } else {
+
+        $sql_add_tag = 'INSERT INTO tbl_usertags (usertags_tags_id, usertags_users_id) VALUES (:value, :user_id)';
+        $sth_add_tag = $db->prepare($sql_add_tag);
+        $sth_add_tag->bindParam(":value", $tag_id);
+        $sth_add_tag->bindParam(":user_id", $user_id);
+        $sth_add_tag->execute();
+        $_SESSION['success'] = 'Succesfully added tags!';
+
+    }
+
 }
 
 function removeTagsFromUser($tag_id, $user_id) {

@@ -40,11 +40,12 @@ $sth_admin_select->execute();
                                ?>
                                <form action="index.php?page=admin_edit" method="post"><td><button class="btn btn-primary" type="submit" name="admin_edit" value="<?= $row['users_id'] ?>">EDIT</button></td></form>
                                <form action="php/CRUD/admin_crud.php" method="post">
-                                   <?php if(isset($_SESSION['notification'])) {
-                                       $error = $_SESSION['notification'];
-                                       popupmessage('Are you sure?', $error, 'Continue');
-                                       unset($_SESSION['notification']);
+                                   <?php if(isset($_POST['admin_delete'])) {
+                                       popupmessage('Admin Delete', 'Are you sure?', 'Continue');
                                    } ?>
+                                   <input type="hidden" name="admin_delete" value="<?= $row['users_id'] ?>">
+                               </form>
+                                   <form action="" method="post">
                                    <td><button class="btn btn-primary" type="submit" name="admin_delete" value="<?= $row['users_id'] ?>">Delete</button></td>
                                </form>
                     <?php

@@ -1,9 +1,18 @@
 <?php
 require 'private/conn.php';
 require 'functions/multi_select_form.php';
-if (isset($_SESSION['notification'])) {
-    echo '<p class="text-red-500">' . $_SESSION['notification'] . '</p>';
+require "functions/errormessage.php";
+require "functions/succesmessage.php";
+
+if(isset($_SESSION['notification'])) {
+    $error = $_SESSION['notification'];
+    errormessage($error);
     unset($_SESSION['notification']);
+}
+if(isset($_SESSION['success'])) {
+    $error = $_SESSION['success'];
+    succesmessage($error);
+    unset($_SESSION['success']);
 }
 
 $sql_user_info = "SELECT * FROM tbl_users WHERE users_id = :user_id";
@@ -15,8 +24,8 @@ $user_info = $stmt_user_info->fetch(PDO::FETCH_ASSOC);
 $currenteducation_id = $user_info['users_education_id'];
 
 $sql_currenteducation = "SELECT education_name
-FROM tbl_education
-WHERE education_id=:education_id";
+                            FROM tbl_education
+                            WHERE education_id=:education_id";
 $stmt_currenteducation = $db->prepare($sql_currenteducation);
 $stmt_currenteducation->bindParam(':education_id', $currenteducation_id);
 $stmt_currenteducation->execute();
@@ -26,7 +35,7 @@ if ($row1 = $stmt_currenteducation->fetch(PDO::FETCH_ASSOC)) {
 var_dump($currenteducation_id);
 
 $sql_education = "SELECT education_name, education_id 
-                 FROM tbl_education";
+                    FROM tbl_education";
 $stmt_education = $db->prepare($sql_education);
 $stmt_education->execute();
 
@@ -96,7 +105,6 @@ $stmt_images->execute();
                 });
                 $(this).css('color', 'white'); // Reset color
             }
-            var max = 3;
             // Get the associated checkbox
             var checkbox = $(this).prev('input[type="checkbox"]');
             // Toggle the checkbox's checked state
@@ -163,8 +171,7 @@ $stmt_images->execute();
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-sm">
-        </div>
+
         <div class="col-sm">
             <h5>Edit Profile</h5>
             <h5><?= $user_info['users_username'] ?></h5>
@@ -257,6 +264,14 @@ $stmt_images->execute();
             </form>
         </div>
         <div class="col-sm">
+
+
+                <h2>Preview: </h2>
+                <?php
+                $_POST['user_id'] = $_SESSION['users_id'];
+                include 'open_user.inc.php';
+                ?>
+
         </div>
     </div>
 </div>
