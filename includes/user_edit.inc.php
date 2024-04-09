@@ -1,9 +1,9 @@
 <?php
 require 'private/conn.php';
+include 'functions/errormessage.php';
 if (session_id() == '') {
     session_start();
 }
-
 
 $sql_languages = "SELECT *
                  FROM tbl_languages";
@@ -14,7 +14,6 @@ $sql_location = "SELECT *
                  FROM tbl_municipalities";
 $stmt_location = $db->prepare($sql_location);
 $stmt_location->execute();
-
 
 $query = "SELECT * FROM tbl_users WHERE users_id=:users_id";
 $stmt = $db->prepare($query);
@@ -43,18 +42,124 @@ $sql_currentlanguages = "SELECT *
 $stmt_currentlanguages = $db->prepare($sql_currentlanguages);
 $stmt_currentlanguages->bindParam(':user_languages_users_id', $_SESSION['users_id']);
 $stmt_currentlanguages->execute();
-if ($row = $stmt_currentlanguages->fetch(PDO::FETCH_ASSOC)) {
-
-}
+$result = $stmt_currentlanguages->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
 <script src="./functions/showpass.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the button element
+        var openModalButton = document.getElementById('openModalButton');
+        // Add a click event listener to the button
+        openModalButton.addEventListener('click', function() {
+            // Use jQuery to trigger the modal display
+            $('#language_modal').modal('show');
+        });
+        // Get the close buttons within the modal
+        var modalCloseButtons = document.querySelectorAll('#language_modal .btn-close, #language_modal [data-bs-dismiss="modal"]');
+        // Add click event listeners to each close button
+        modalCloseButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Use jQuery to close the modal
+                $('#language_modal').modal('hide');
+            });
+        });
+    });
+</script>
+<div class="modal fade" id="language_modal" tabindex="-1" aria-labelledby="tags_modal_label" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" >Add Tags</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="php/user_edit.php" method="post">
+                <label for="Languages" class="form-label">Chosen Tags</label>
+                <div class="container">
+                    <?php foreach($result as $currentlanguages){
+                        $color = "#" . str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);
+                        ?>
+                        <!-- Add hidden checkbox -->
+                        <input type="checkbox" name="uncheck_languages[]" value="<?= $currentlanguages['user_languages_languages_id'] ?>" style="display: none;">
+                        <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" data-language-id="<?= $currentlanguages['user_languages_languages_id'] ?>">
+                <?= $currentlanguages['languages_name'] ?>
+            </span>
+                    <?php } ?>
+                </div>
+                <hr class="rounded">
+                <div class="container">
+                    <?php foreach($stmt_languages->fetchAll(PDO::FETCH_ASSOC) as $languages){
+                        $color = "#" . str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);
+                        $languageId = $languages['languages_id'];
+                        $tagChosen = false; // Initialize as false
+
+                        // Check if the current tag ID exists in the user's chosen tags
+                        foreach ($result as $currentlanguage) {
+                            if ($currentlanguage['user_languages_languages_id'] == $languageId) {
+                                $tagChosen = true;
+                                break; // If found, no need to continue searching
+                            }
+                        }
+                        if(!$tagChosen) {
+                            ?>
+                            <!-- Add hidden checkbox -->
+                            <input type="checkbox" name="chosen_languages[]" value="<?= $languageId ?>" style="display: none;">
+                            <span class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" data-language-id="<?= $languageId ?>">
+                    <?= $languages['languages_name'] ?>
+                </span>
+                        <?php } ?>
+                    <?php } ?>
+                </div>
+                <script>
+                    $(document).ready(function() {
+                        // Click event handler for clickable badges
+                        $('.badge-clickable').click(function() {
+                            $(this).toggleClass('chosen');
+
+                            // If the element is chosen, set border properties
+                            if ($(this).hasClass('chosen')) {
+                                $(this).css({
+                                    'border-style' : 'solid',
+                                    'border-width': 'medium',
+                                });
+                                $(this).css('border-color', 'blue');
+                            } else {
+                                // If the element is not chosen, reset border properties
+                                $(this).css({
+                                    'border-style' : '',
+                                    'border-width': '',
+                                });
+                                $(this).css('color', 'white'); // Reset color
+                            }
+                            // Get the associated checkbox
+                            var checkbox = $(this).prev('input[type="checkbox"]');
+                            // Toggle the checkbox's checked state
+                            checkbox.prop('checked', !checkbox.prop('checked'));
+                        });
+
+                    });
+                </script>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
 <div class="container">
     <div class="row">
+
         <div class="col-sm">
-            <button type="button" id="delete" class="btn btn-danger">Delete</button>
+            <form action="php/user_edit.php" method="post">
+                <button type="submit" name="delete" id="delete" class="btn btn-danger">Delete</button>
+            </form>
         </div>
+
         <div class="col-sm">
             <div class="registration">
                 <h1>Edit Account</h1>
@@ -108,15 +213,11 @@ if ($row = $stmt_currentlanguages->fetch(PDO::FETCH_ASSOC)) {
                             ?>
                         </select>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Language</label>
-                        <select class="form-select" name="language[]" size="6" id="language" multiple>
-                            <?php foreach ($stmt_languages->fetchAll(PDO::FETCH_ASSOC) as $language) { ?>
-                                <option value="<?= $language['languages_id'] ?>"><?= $language['languages_name'] ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
+                    <label for="location" class="form-label">Language</label>
+                    <button type="button" class="btn btn-primary" id="openModalButton">
+                        Edit Languages
+                    </button>
+                    <br>
                     <button type="submit" class="btn btn-primary" id="edit">Edit</button>
                 </form>
             </div>
