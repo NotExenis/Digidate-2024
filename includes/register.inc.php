@@ -1,7 +1,7 @@
 <?php 
 require 'private/conn.php';
 
-$sql_gender = "SELECT genders_name 
+$sql_gender = "SELECT genders_name, genders_id
                FROM tbl_genders";
 $stmt_gender = $db->prepare($sql_gender);
 $stmt_gender->execute();
@@ -67,7 +67,7 @@ $stmt_location->execute();
                         <label for="gender" class="form-label">Gender *</label>
                         <select class="form-select" value="<?= $gender['genders_id']?>" name="gender" required>
                             <?php foreach($stmt_gender as $gender){ ?>
-                                <option ><?= $gender['genders_name']?></option>
+                                <option value="<?=$gender['genders_id'] ?>" ><?= $gender['genders_name']?></option>
                             <?php } ?>
                         </select>
                     </div>
