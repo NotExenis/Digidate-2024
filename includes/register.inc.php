@@ -1,11 +1,14 @@
 <?php 
+
 require 'private/conn.php';
 
-$sql_gender = "SELECT * FROM tbl_genders";
+$sql_gender = "SELECT genders_name 
+               FROM tbl_genders";
 $stmt_gender = $db->prepare($sql_gender);
 $stmt_gender->execute();
 
-$sql_location = "SELECT * FROM tbl_municipalities";
+$sql_location = "SELECT municipality_name 
+                 FROM tbl_municipalities";
 $stmt_location = $db->prepare($sql_location);
 $stmt_location->execute();
 ?>
@@ -72,9 +75,9 @@ $stmt_location->execute();
 
                     <div class="mb-3">
                         <label for="location" class="form-label">Location *</label>
-                        <select class="form-select"  name="location" required>
+                        <select class="form-select"  value="<?= $location['municipality_id']?>" name="location" required>
                             <?php foreach($stmt_location as $location){ ?>
-                                <option  value="<?= $location['municipality_id']?>"><?= $location['municipality_name']?></option>
+                                <option><?= $location['municipality_name']?></option>
                             <?php } ?>
                         </select>
                     </div>
