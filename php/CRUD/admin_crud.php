@@ -3,7 +3,7 @@ require '../../private/conn.php';
 include '../audit_trail.php';
 
 session_start();
-
+var_dump($_POST);
 if(isset($_POST['admin_add'])) {
     AdminAdd($_POST['first_name'], $_POST['preposition'], $_POST['last_name'], $_POST['email']);
 }
