@@ -1,7 +1,6 @@
 <?php
 require '../private/conn.php';
-
-
+require '../functions/unset_function.php';
 session_start();
 
 $email = $_POST['email'];
@@ -42,32 +41,20 @@ if (password_verify($password, $r['users_password'])) {
             } else {
                 $_SESSION['notification'] = 'Your account seems to have been deleted';
                 header('Location:../index.php?page=login');
-                unset($_SESSION['users_role']);
-                unset($_SESSION['users_id']);
-                unset($_SESSION['first_login']);
-                unset($_SESSION['user_active']);
+                unsetSessions();
             }
         } else {
             $_SESSION['notification'] = 'Something went wrong getting your User-ID';
             header('Location:../index.php?page=login');
-            unset($_SESSION['users_role']);
-            unset($_SESSION['users_id']);
-            unset($_SESSION['first_login']);
-            unset($_SESSION['user_active']);
+            unsetSessions();
         }
     } else {
         $_SESSION['notification'] = 'Something went wrong getting your role';
         header('Location:../index.php?page=login');
-        unset($_SESSION['users_role']);
-        unset($_SESSION['users_id']);
-        unset($_SESSION['first_login']);
-        unset($_SESSION['user_active']);
+        unsetSessions();
     }
 } else {
     $_SESSION['notification'] = 'Your password does not match';
     header('Location:../index.php?page=login');
-    unset($_SESSION['users_role']);
-    unset($_SESSION['users_id']);
-    unset($_SESSION['first_login']);
-    unset($_SESSION['user_active']);
+    unsetSessions();
 }

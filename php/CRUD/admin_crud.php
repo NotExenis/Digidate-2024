@@ -1,5 +1,4 @@
 <?php
-
 require '../../private/conn.php';
 include '../audit_trail.php';
 
@@ -88,7 +87,6 @@ function AdminDelete($admin_id) {
     header('Location: ../../index.php?page=admin_table');
 
 }
-
 function AdminChangePassword($admin_id, $admin_password) {
     include '../../private/conn.php';
     $pass = password_hash($admin_password, PASSWORD_DEFAULT);
