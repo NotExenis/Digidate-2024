@@ -16,12 +16,6 @@ $sth_matches_select = $db->prepare($sql_matches_select);
 $sth_matches_select->bindParam(':user_id', $_SESSION['users_id']);
 $sth_matches_select->execute();
 $result = $sth_matches_select->fetchAll();
-foreach($result as $user) {
-    var_dump($user['id1']);
-
-}
-
-
 
 ?>
 
@@ -61,7 +55,7 @@ foreach($result as $user) {
                                     } ?>
                                     <input type="hidden" name="user_unmatch" value="<?= $row['users_id'] ?>">
                                 </form>
-                                <form action="" method="post">
+                                <form action="php/unmatch.php" method="post">
                                     <td><button class="btn btn-primary" type="submit" name="unmatch_user" value="<?= $row['users_id'] ?>">Unmatch</button></td>
                                 </form>
                                 <?php
