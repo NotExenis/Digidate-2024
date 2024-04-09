@@ -2,7 +2,7 @@
 
 require 'private/conn.php';
 
-$sql_gender = "SELECT genders_name 
+$sql_gender = "SELECT genders_name, genders_id
                FROM tbl_genders";
 $stmt_gender = $db->prepare($sql_gender);
 $stmt_gender->execute();
