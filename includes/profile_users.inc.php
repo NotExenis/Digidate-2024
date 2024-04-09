@@ -16,7 +16,6 @@ $sql = "SELECT * FROM tbl_users LIMIT $start, $limit";
 $stmt = $db->prepare($sql);
 $stmt->execute();
 
-
 ?>
 
 <div class="container">
