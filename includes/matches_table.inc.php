@@ -17,7 +17,6 @@ $sth_matches_select = $db->prepare($sql_matches_select);
 $sth_matches_select->bindParam(':user_id', $_SESSION['users_id']);
 $sth_matches_select->execute();
 $result = $sth_matches_select->fetchAll();
-echo '<pre>', print_r($result), '</pre>';
 
 
 ?>
