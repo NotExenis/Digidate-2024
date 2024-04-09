@@ -3,33 +3,23 @@ include 'private/conn.php';
 require 'functions/popupmessage.php';
 include 'functions/get_user_info.php';
 
-$sql_matches_select = "SELECT likes_liked_user AS id1, likes_current_user AS id2
+
+$sql_matches_select = "SELECT likes_liked_user AS id1, likes_current_user AS id2, likes_is_unmatched
                         FROM tbl_likes 
-                         WHERE likes_current_user = :user_id 
-                AND likes_liked_user IN 
-                (SELECT L.likes_current_user
-                FROM tbl_likes AS L 
-                INNER JOIN tbl_users AS U ON L.likes_liked_user = U.users_id 
-                WHERE likes_liked_user = :user_id)";
+                        WHERE likes_current_user = :user_id 
+                        AND likes_liked_user IN 
+                        (SELECT L.likes_current_user
+                        FROM tbl_likes AS L 
+                        INNER JOIN tbl_users AS U ON L.likes_liked_user = U.users_id 
+                        WHERE likes_liked_user = :user_id)
+                        AND likes_is_unmatched = 0";
 $sth_matches_select = $db->prepare($sql_matches_select);
 $sth_matches_select->bindParam(':user_id', $_SESSION['users_id']);
 $sth_matches_select->execute();
 $result = $sth_matches_select->fetchAll();
 echo '<pre>', print_r($result), '</pre>';
 
-$sql_unmatch_select = "SELECT * FROM tbl_unmatch WHERE unmatch_user_id_unmatcher = :user_id OR unmatch_user_id_target = :user_id";
-$sth_unmatch_select = $db->prepare($sql_unmatch_select);
-$sth_unmatch_select->bindParam(':user_id', $_SESSION['users_id']);
-$sth_unmatch_select->execute();
-$unmatches = $sth_unmatch_select->fetchAll();
-echo '<pre>', print_r($unmatches), '</pre>';
 
-foreach($result as $array) {
-
-    if(in_array($array, $unmatches)) {
-        echo 'hi';
-    }
-}
 ?>
 
 <div class="container">
