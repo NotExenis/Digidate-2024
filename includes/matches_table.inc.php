@@ -54,8 +54,8 @@ foreach($result as $user) {
                         if(isset($_SESSION['users_role'])){
                             if($_SESSION['users_role'] == 1) {
                                 ?>
-                                <form action="index.php?page=admin_edit" method="post"><td><button class="btn btn-primary" type="submit" name="user_chat" value="<?= $row['users_id'] ?>">CHAT</button></td></form>
-                                <form action="php/CRUD/admin_crud.php" method="post">
+                                <form action="index.php?page=chat" method="post"><td><button class="btn btn-primary" type="submit" name="user_chat" value="<?= $row['users_id'] ?>">CHAT</button></td></form>
+                                <form action="" method="post">
                                     <?php if(isset($_POST['unmatch_user'])) {
                                         popupmessage('Admin Delete', 'Are you sure?', 'Continue');
                                     } ?>
