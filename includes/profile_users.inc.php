@@ -12,7 +12,19 @@ $total_rows = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
 $total_pages = ceil($total_rows / $limit);
 
-$sql = "SELECT * FROM tbl_users LIMIT $start, $limit";
+$sql = "SELECT u.*
+FROM tbl_users u
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM tbl_dislikes d
+    WHERE u.users_id = d.dislikes_disliked_user
+    OR u.users_id = d.dislikes_current_user
+) AND NOT EXISTS (
+    SELECT 1
+    FROM tbl_unmatch um
+    WHERE u.users_id = um.unmatch_user_id_target 
+    OR u.users_id = um.unmatch_user_id_unmatcher
+) LIMIT $start, $limit";
 $stmt = $db->prepare($sql);
 $stmt->execute();
 
@@ -63,7 +75,7 @@ $stmt->execute();
                             <?php } ?>
                         <?php } ?>
                         <div class="card-body">
-                            <h5 class="card-title" style="font-size: 16px; margin-bottom: 5px;"><?= $r['users_first_name'] ?></h5>
+                            <h5 class="card-title" style="font-size: 16px; margin-bottom: 5px;"><?= $r['users_username'] ?></h5>
                             <p class="card-text" style="font-size: 14px; margin-bottom: 5px;"><?= $r['users_description'] ?></p>
                             <button type="button" class="btn btn-danger" style="font-size: 14px;">
                                 <i class="bi bi-x"></i> Dislike

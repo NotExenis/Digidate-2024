@@ -31,6 +31,7 @@ $result = $sth_matches_select->fetchAll();
 
             <table>
                 <tr>
+                    <th>Photo</th>
                     <th>User Name</th>
                     <th>User Location</th>
                     <th>User Birthdate: </th>
