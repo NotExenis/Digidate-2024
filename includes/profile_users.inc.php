@@ -16,8 +16,21 @@ $sql = "SELECT * FROM tbl_users LIMIT $start, $limit";
 $stmt = $db->prepare($sql);
 $stmt->execute();
 
-
+$sql3 = "SELECT * FROM tbl_genders";
+$stmt3 = $db->prepare($sql3);
+$stmt3->execute();
 ?>
+
+<br>
+<div class="row">
+    <div class="col-md-1">
+        <select class="form-control custom-select pl-1">
+            <?php foreach ($stmt3 as $r2){ ?>
+            <option class="dropdown-item" value="<?= $r2['genders_id'] ?>"> <?= $r2['genders_name']?></option>
+            <?php } ?>
+        </select>
+    </div>
+</div>
 
 <div class="container">
     <div class="row row-cols-1 row-cols-md-4 g-4">
