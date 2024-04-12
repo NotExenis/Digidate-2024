@@ -23,6 +23,7 @@ if(isset($_POST['admin_change_pass'])) {
     } else {
 
         AdminChangePassword($_POST['admin_change_pass'], $_POST['password1']);
+        header('Location:../../index.php?page=2fa_setup');
 
     }
 }
@@ -105,7 +106,6 @@ function AdminChangePassword($admin_id, $admin_password) {
     $sth_admin_password_insert->bindParam(":password", $pass);
 
     $sth_admin_password_insert->execute();
-    header('Location:../../index.php?page=2fa_setup');
 
 
 }
