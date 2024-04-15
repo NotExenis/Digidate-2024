@@ -120,3 +120,17 @@ function removeTagsFromUser($tag_id, $user_id) {
     $usertags = $stmt_usertags->fetch(PDO::FETCH_ASSOC);
     return $usertags;
 }
+
+function PasswordChange($password, $user_id) {
+
+    include '../../private/conn.php';
+
+    $sql_admin_insert = 'UPDATE tbl_users SET users_password = :password WHERE users_id = :users_id';
+    $sth_admin_insert = $db->prepare($sql_admin_insert);
+    $sth_admin_insert->bindParam(":password", $password);
+    $sth_admin_insert->bindParam(":users_id", $user_id);
+
+    $sth_admin_insert->execute();
+    header('Location: ../../index.php?page=admin_table');
+
+}

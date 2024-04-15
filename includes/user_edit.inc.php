@@ -44,7 +44,6 @@ $stmt_currentlanguages->bindParam(':user_languages_users_id', $_SESSION['users_i
 $stmt_currentlanguages->execute();
 $result = $stmt_currentlanguages->fetchAll(PDO::FETCH_ASSOC);
 
-
 ?>
 <script src="./functions/showpass.js"></script>
 <script>
@@ -219,6 +218,15 @@ $result = $stmt_currentlanguages->fetchAll(PDO::FETCH_ASSOC);
                     </button>
                     <br>
                     <button type="submit" class="btn btn-primary" id="edit">Edit</button>
+                </form>
+                <form action="php/mailer.php" method="post">
+                    <?php if(isset($_POST['change_password'])) {
+                        popupmessage('Change Password', 'Are you sure?', 'Continue');
+                    } ?>
+                    <input type="hidden" name="user_id" value="<?= $row['users_id'] ?>">
+                </form>
+                <form action="" method="post">
+                    <td><button class="btn btn-primary" type="submit" name="change_password" value="<?= $row['users_id'] ?>">Delete</button></td>
                 </form>
             </div>
         </div>
