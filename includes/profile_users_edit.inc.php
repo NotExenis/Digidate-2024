@@ -114,57 +114,19 @@ $stmt_images->execute();
     });
 </script>
 
-<?php
-?>
-<div id="tag_modal"></div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-
-        </div>
-        <div class="col-sm">
-            <form method="POST" enctype="multipart/form-data" action="php/photo_upload.php">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" name="email" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
-                </div>
-                <div class="mb-3">
-                    <label for="location" class="form-label">Location</label>
-                    <select class="form-select" name="language">
-                        <?php foreach ($stmt_location->fetchAll(PDO::FETCH_ASSOC) as $location) { ?>
-                            <option value="<?= $location['municipality_id'] ?>"><?= $location['municipality_name'] ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="education" class="form-label">Education</label>
-                    <select class="form-select" name="education">
-                        <?php foreach ($stmt_education as $education) {
-
-                            if ($education['education_name'] == $stmt_user_education->fetch()) {
-                                ?>
-                                <option disabled><?= $education['education_name'] ?></option>
-
-                                <?php
-                            } else {
-                                ?>
-                                <option><?= $education['education_name'] ?></option>
-
-                                <?php
-                            }
-                            ?>
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="education" class="form-label">Tags</label>
+<!-- Modal -->
+<div class="modal fade" id="tags_modal" tabindex="-1" aria-labelledby="tags_modal_label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" >Add Tags</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="php/CRUD/user_crud.php" method="post">
+                    <label for="Tags" class="form-label">Chosen Tags</label>
                     <div class="container">
-                        <?php foreach ($usertags as $tags) {
+                        <?php foreach($usertags as $tags){
                             $color = isset($tags["tags_color"]) ? $tags["tags_color"] : "blue";
                             ?>
                             <!-- Add hidden checkbox -->
@@ -202,10 +164,10 @@ $stmt_images->execute();
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </div>
 <div class="container">
     <div class="row">
@@ -268,8 +230,7 @@ $stmt_images->execute();
                         <?php
                         $x = 0;
                         foreach ($stmt_images->fetchAll(PDO::FETCH_ASSOC) as $image) {
-
-                            if ($x == 0) {
+                            if($x == 0) {
                                 ?>
                                 <div class="carousel-item active">
                                     <img class="d-block w-200" src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
