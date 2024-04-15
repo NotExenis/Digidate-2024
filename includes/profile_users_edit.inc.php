@@ -147,15 +147,15 @@ $stmt_images->execute();
                         <?php foreach ($stmt_education as $education) {
 
                             if ($education['education_name'] == $stmt_user_education->fetch()) {
-                        ?>
+                                ?>
                                 <option disabled><?= $education['education_name'] ?></option>
 
-                            <?php
+                                <?php
                             } else {
-                            ?>
+                                ?>
                                 <option><?= $education['education_name'] ?></option>
 
-                            <?php
+                                <?php
                             }
                             ?>
                         <?php } ?>
@@ -170,8 +170,8 @@ $stmt_images->execute();
                             <!-- Add hidden checkbox -->
                             <input type="checkbox" name="uncheck_tags[]" value="<?= $tags['tags_id'] ?>" style="display: none;">
                             <div class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" data-tag-id="<?= $tags['tags_id'] ?>">
-                <?= $tags['tags_title'] ?>
-            </div>
+                                <?= $tags['tags_title'] ?>
+                            </div>
                         <?php } ?>
                     </div>
                     <hr class="rounded">
@@ -193,8 +193,8 @@ $stmt_images->execute();
                                 <!-- Add hidden checkbox -->
                                 <input type="checkbox" name="chosen_tags[]" value="<?= $tagId ?>" style="display: none;">
                                 <div class="badge rounded-fill badge-clickable" style="background-color: <?= $color ?>" data-tag-id="<?= $tagId ?>">
-                    <?= $tags['tags_title'] ?>
-                </div>
+                                    <?= $tags['tags_title'] ?>
+                                </div>
                             <?php } ?>
                         <?php } ?>
                     </div>
@@ -202,10 +202,10 @@ $stmt_images->execute();
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <div class="container">
     <div class="row">
@@ -270,17 +270,17 @@ $stmt_images->execute();
                         foreach ($stmt_images->fetchAll(PDO::FETCH_ASSOC) as $image) {
 
                             if ($x == 0) {
-                        ?>
+                                ?>
                                 <div class="carousel-item active">
                                     <img class="d-block w-200" src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
                                 </div>
-                            <?php
+                                <?php
                             } else {
-                            ?>
+                                ?>
                                 <div class="carousel-item">
                                     <img class="d-block w-200" src="data:image/jpeg;base64, <?= $image['images_image'] ?> " style="max-width: 200px" />
                                 </div>
-                        <?php
+                                <?php
                             }
                             $x++;
                         }
@@ -305,11 +305,11 @@ $stmt_images->execute();
         <div class="col-sm">
 
 
-                <h2>Preview: </h2>
-                <?php
-                $_POST['user_id'] = $_SESSION['users_id'];
-                include 'open_user.inc.php';
-                ?>
+            <h2>Preview: </h2>
+            <?php
+            $_POST['user_id'] = $_SESSION['users_id'];
+            include 'open_user.inc.php';
+            ?>
 
         </div>
     </div>
