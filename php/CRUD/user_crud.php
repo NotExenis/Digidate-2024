@@ -2,7 +2,7 @@
 include '../audit_trail.php';
 session_start();
 var_dump($_POST);
-if(isset($_POST['user_edit'])) {
+ if(isset($_POST['user_edit'])) {
     //var_dump($_POST);
     foreach($_POST as $input) {
         if($input = 'user_edit') {
@@ -15,6 +15,7 @@ if(isset($_POST['user_edit'])) {
     }
     header('Location: ../../index.php?page=profile_users_edit');
 }
+
 if(isset($_POST['uncheck_tags'])) {
     foreach($_POST['uncheck_tags'] as $tags) {
         removeTagsFromUser($tags, $_SESSION['users_id']);
@@ -52,11 +53,22 @@ if( isset($_POST['getColor'])){
 if(isset($_POST['user_change_pass'])) {
     if($_POST['password1'] != $_POST['password2']) {
         $_SESSION['error_message'] = 'Password do not match. Try again';
+        echo $_SESSION['error_message'];
         header('Location: ../../index.php?page=change_password&user_id='.$_POST['user_change_pass'].'');
-    } else {
-        PasswordChange($_POST['user_change_pass'], $_POST['password1']);
-        $_SESSION['success_message'] = 'Password has been succesfully changed. Please login to continue using the website!';
-        header('Location:../../index.php?page=logout');
+    } else if ($_POST['password1'] == $_POST['password2']) {
+        if (!is_valid_password($_POST['password1'])) {
+            $_SESSION['notification'] = 'Password is invalid, make sure it contains exactly 15 characters, at least 1 uppercase letter, 1 lowercase letter, 1 special character, and 1 number';
+            echo $_SESSION['notification'];
+            header('location:../../index.php?page=change_password&user_id='.$_POST['user_change_pass'].'');
+            exit;
+        } else {
+            $password = $_POST['password1'];
+            $user_id = $_POST['user_change_pass'];
+            PasswordChange($password, $user_id);
+            $_SESSION['success_message'] = 'Password has been succesfully changed. Please login to continue using the website!';
+            echo $_SESSION['success_message'];
+            header('Location:../../index.php?page=logout');
+        }
     }
 }
 
@@ -103,7 +115,7 @@ function addTagsToUser($tag_id, $user_id) {
     $check_tags = CheckTags($user_id);
 
     if(isset($check_tags)) {
-        if (array_count_values($check_tags) >= 4) {
+        if (array_count_values($check_tags) >= 5) {
             $_SESSION['notification'] = 'You have tried to add more than the maximum of 5 tags.';
         }
 
@@ -132,16 +144,21 @@ function removeTagsFromUser($tag_id, $user_id) {
     return $usertags;
 }
 
-function PasswordChange($password, $user_id) {
-
+function PasswordChange($input_password, $user_id) {
     include '../../private/conn.php';
+    $pass = password_hash($input_password, PASSWORD_DEFAULT);
 
+    echo "<pre>" . print_r($pass) ."</pre>";
+    echo "<pre>" . $input_password ."</pre>";
     $sql_admin_insert = 'UPDATE tbl_users SET users_password = :password WHERE users_id = :users_id';
     $sth_admin_insert = $db->prepare($sql_admin_insert);
-    $sth_admin_insert->bindParam(":password", $password);
+    $sth_admin_insert->bindParam(":password", $pass);
     $sth_admin_insert->bindParam(":users_id", $user_id);
 
     $sth_admin_insert->execute();
-    header('Location: ../../index.php?page=admin_table');
+    //header('Location: ../../index.php?page=user_edit');
+}
 
+function is_valid_password($password) {
+    return preg_match('/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*()-_=+{};:,<.>]).{15,}$/', $password);
 }

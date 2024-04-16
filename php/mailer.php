@@ -65,6 +65,6 @@ try {
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
-
-//header('location: ../index.php?page=login');
+$_SESSION['success_message'] = 'Password has been succesfully changed. Please login to continue using the website!';
+header('location: ../index.php?page=login');
 ?>
