@@ -1,42 +1,41 @@
 <?php
 require '../private/conn.php' ;
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-
-$uid = uniqid (rand (), true);
+var_dump($_POST);
+/*$uid = uniqid (rand (), true);
 $dt_now = new DateTime('now');
 $dt_now2 = new DateTime('now');
 $dt = date_modify($dt_now, '+1 hour');
-print_r($dt_now);
+//print_r($dt_now);
 $diff = $dt->diff($dt_now2, true);
-print_r($diff);
+//print_r($diff);*/
 
-$id = $_POST['id'];
+//$id = $_POST['user_id'];
 
-$sql = "UPDATE tbl_users
-        SET archive = 1
-        WHERE user_id = :id";
-$stmt = $conn->prepare($sql);
-$stmt->execute(array(
-    ':id' => $id,
-));
-
-$sql2 = "SELECT user_email FROM tbl_users WHERE user_id = :id";
-$stmt2 = $conn->prepare($sql2);
+$sql2 = "SELECT users_email FROM tbl_users WHERE users_id = :id";
+$stmt2 = $db->prepare($sql2);
 $stmt2->execute(array(
-    ':id' => $id,
+    ':id' => $_POST['user_id'],
 ));
-
-$r = $stmt2->fetchAll();
-
-$to = $r[0]['user_email'];
-
+$id = $_POST['user_id'];
+$r = $stmt2->fetch();
+$to = $r['users_email'];
+var_dump($id);
+var_dump($r);
+$link = '<a href="http://localhost/digidate/index.php?page=change_password&user_id=""> Change Password</a>';
 $mail = new PHPMailer(true);
-
+$message = "
+<html lang='en'>
+<body>
+<b>Your request for password change has been approved</b>. Please click the link <a href='http://localhost/digidate/index.php?page=change_password&user_id=$id'> Change Password</a>
+</body>
+</html>
+";
 // sending the user a email if denied
 try {
     //Server settings
@@ -46,8 +45,8 @@ try {
     $mail->SMTPAuth   = true;
     $mail->Username   = 'digidate2023@gmail.com';
     $mail->Password   = 'ociu hhkm zaqm fvch';
-    $mail->SMTPSecure = 'tls';
-    $mail->Port       = 587;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Port       = 465;
     $mail->isHTML(true);
 
     //Recipients
@@ -59,7 +58,7 @@ try {
     //Content
     $mail->isHTML(true);
     $mail->Subject = 'Digidate';
-    $mail->Body    = 'Your request to join Digidate has been denied';
+    $mail->Body    =  $message;
 
     $mail->send();
     echo 'Message has been sent';
@@ -67,5 +66,5 @@ try {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
 
-header('location: ../index.php?page=login');
+//header('location: ../index.php?page=login');
 ?>

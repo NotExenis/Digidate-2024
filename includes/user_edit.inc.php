@@ -1,6 +1,7 @@
 <?php
 require 'private/conn.php';
 include 'functions/errormessage.php';
+include 'functions/popupmessage.php';
 if (session_id() == '') {
     session_start();
 }
@@ -223,10 +224,10 @@ $result = $stmt_currentlanguages->fetchAll(PDO::FETCH_ASSOC);
                     <?php if(isset($_POST['change_password'])) {
                         popupmessage('Change Password', 'Are you sure?', 'Continue');
                     } ?>
-                    <input type="hidden" name="user_id" value="<?= $row['users_id'] ?>">
+                    <input type="hidden" name="user_id" value="<?= $_SESSION['users_id'] ?>">
                 </form>
                 <form action="" method="post">
-                    <td><button class="btn btn-primary" type="submit" name="change_password" value="<?= $row['users_id'] ?>">Delete</button></td>
+                    <td><button class="btn btn-primary" type="submit" name="change_password" value="<?= $_SESSION['users_id'] ?>">Change Password</button></td>
                 </form>
             </div>
         </div>

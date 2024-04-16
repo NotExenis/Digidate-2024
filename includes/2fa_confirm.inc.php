@@ -23,7 +23,7 @@ if(isset($_POST['2fa_token'])) {
     } else {
         echo "Token is invalid!";
         $_SESSION['notification'] = 'Two-Factor Authentication error. Please try again.';
-        header('Location:../index.php?page=login');
+        header('Location:index.php?page=login');
 
     }
 }

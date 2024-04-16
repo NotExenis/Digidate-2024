@@ -5,6 +5,7 @@ if(isset($_SESSION['error_message'])) {
     errormessage($_SESSION['error_message']);
     unset($_SESSION['error_message']);
 }
+$id = $_GET['user_id'];
 ?>
 
 <div class="container">
@@ -23,8 +24,8 @@ if(isset($_SESSION['error_message'])) {
                     <input type="text" class="form-control" id="password2" name="password2" required>
                 </div>
                 <br>
-                <input type="hidden" name="admin_change_pass" value="<?= $_GET['users_id'] ?>">
-                <button type="submit" class="btn btn-primary">Login</button>
+                <input type="hidden" name="user_change_pass" value="<?= $id ?>">
+                <button type="submit" class="btn btn-primary">Change Password</button>
             </form>
         </div>
         <div class="col-sm">

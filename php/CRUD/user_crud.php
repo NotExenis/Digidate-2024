@@ -49,6 +49,17 @@ if( isset($_POST['getColor'])){
     }
 }
 
+if(isset($_POST['user_change_pass'])) {
+    if($_POST['password1'] != $_POST['password2']) {
+        $_SESSION['error_message'] = 'Password do not match. Try again';
+        header('Location: ../../index.php?page=change_password&user_id='.$_POST['user_change_pass'].'');
+    } else {
+        PasswordChange($_POST['user_change_pass'], $_POST['password1']);
+        $_SESSION['success_message'] = 'Password has been succesfully changed. Please login to continue using the website!';
+        header('Location:../../index.php?page=logout');
+    }
+}
+
 function CheckTags($user_id) {
     include '../../private/conn.php';
 
