@@ -25,23 +25,6 @@ $stmt4 = $db->prepare($sql4);
 $stmt4->execute();
 ?>
 
-<br>
-<div class="row">
-    <div class="col-md-1">
-        <select class="form-control custom-select pl-1">
-            <?php foreach ($stmt3 as $r2){ ?>
-            <option class="dropdown-item" value="<?= $r2['genders_id'] ?>"> <?= $r2['genders_name']?></option>
-            <?php } ?>
-        </select>
-    </div>
-    <div class="col-md-1">
-        <select class="form-control custom-select pl-1">
-            <?php foreach ($stmt4 as $r3){ ?>
-            <option class="dropdown-item" value="<?= $r3['education_id'] ?>"> <?= $r3['education_name']?></option>
-            <?php } ?>
-        </select>
-    </div>
-</div>
 
 <div class="container">
     <div class="row row-cols-1 row-cols-md-4 g-4">
