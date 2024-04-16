@@ -19,6 +19,10 @@ $stmt->execute();
 $sql3 = "SELECT * FROM tbl_genders";
 $stmt3 = $db->prepare($sql3);
 $stmt3->execute();
+
+$sql4 = "SELECT * FROM tbl_education";
+$stmt4 = $db->prepare($sql4);
+$stmt4->execute();
 ?>
 
 <br>
@@ -27,6 +31,13 @@ $stmt3->execute();
         <select class="form-control custom-select pl-1">
             <?php foreach ($stmt3 as $r2){ ?>
             <option class="dropdown-item" value="<?= $r2['genders_id'] ?>"> <?= $r2['genders_name']?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-md-1">
+        <select class="form-control custom-select pl-1">
+            <?php foreach ($stmt4 as $r3){ ?>
+            <option class="dropdown-item" value="<?= $r3['education_id'] ?>"> <?= $r3['education_name']?></option>
             <?php } ?>
         </select>
     </div>
@@ -78,9 +89,6 @@ $stmt3->execute();
                         <div class="card-body">
                             <h5 class="card-title" style="font-size: 16px; margin-bottom: 5px;"><?= $r['users_first_name'] ?></h5>
                             <p class="card-text" style="font-size: 14px; margin-bottom: 5px;"><?= $r['users_description'] ?></p>
-                            <button type="button" class="btn btn-danger" style="font-size: 14px;">
-                                <i class="bi bi-x"></i> Dislike
-                            </button>
                             <form action="index.php?page=open_user" method="post">
                                 <button class="btn btn-info">Open profile</button>
                                 <input type="hidden" name="user_id" value="<?= $r['users_id'] ?>">
