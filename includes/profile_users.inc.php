@@ -14,18 +14,21 @@ $total_pages = ceil($total_rows / $limit);
 
 $sql = "SELECT u.*
 FROM tbl_users u
-WHERE NOT EXISTS (
+WHERE u.users_id != :user_id
+AND NOT EXISTS (
     SELECT 1
     FROM tbl_dislikes d
-    WHERE u.users_id = d.dislikes_disliked_user
-    OR u.users_id = d.dislikes_current_user
-) AND NOT EXISTS (
+    WHERE (u.users_id = d.dislikes_disliked_user AND d.dislikes_current_user = :user_id)
+    OR (u.users_id = d.dislikes_current_user AND d.dislikes_disliked_user = :user_id)
+) 
+AND NOT EXISTS (
     SELECT 1
     FROM tbl_unmatch um
-    WHERE u.users_id = um.unmatch_user_id_target 
-    OR u.users_id = um.unmatch_user_id_unmatcher
+    WHERE (u.users_id = um.unmatch_user_id_target AND um.unmatch_user_id_unmatcher = :user_id)
+    OR (u.users_id = um.unmatch_user_id_unmatcher AND um.unmatch_user_id_target = :user_id)
 ) LIMIT $start, $limit";
 $stmt = $db->prepare($sql);
+$stmt->bindParam(':user_id', $_SESSION['users_id']);
 $stmt->execute();
 
 

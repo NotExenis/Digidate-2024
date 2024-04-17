@@ -2,12 +2,10 @@
 include 'private/conn.php';
 require 'functions/popupmessage.php';
 
-
 $sql_admin_select = "SELECT users_id, users_first_name, users_preposition, users_last_name, users_email, users_is_admin, users_creation_date FROM tbl_users WHERE users_is_admin = ". $_SESSION['users_role'] . " ";
 //$sql_admin_select = "SELECT users_id, users_first_name, users_preposition, users_last_name, users_email, users_is_admin, users_creation_date FROM tbl_users WHERE users_is_admin = 1 ";
 $sth_admin_select = $db->prepare($sql_admin_select);
 $sth_admin_select->execute();
-
 
 ?>
 
