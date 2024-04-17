@@ -224,10 +224,19 @@ $result = $stmt_currentlanguages->fetchAll(PDO::FETCH_ASSOC);
                     <?php if(isset($_POST['change_password'])) {
                         popupmessage('Change Password', 'Are you sure?', 'Continue');
                     } ?>
-                    <input type="hidden" name="user_id" value="<?= $_SESSION['users_id'] ?>">
+                    <input type="hidden" name="user_id_pass" value="<?= $_SESSION['users_id'] ?>">
                 </form>
                 <form action="" method="post">
                     <td><button class="btn btn-primary" type="submit" name="change_password" value="<?= $_SESSION['users_id'] ?>">Change Password</button></td>
+                </form>
+                <form action="php/mailer.php" method="post">
+                    <?php if(isset($_POST['change_email'])) {
+                        popupmessage('Change Email', 'Are you sure?', 'Continue');
+                    } ?>
+                    <input type="hidden" name="user_id_email" value="<?= $_SESSION['users_id'] ?>">
+                </form>
+                <form action="" method="post">
+                    <td><button class="btn btn-primary" type="submit" name="change_email" value="<?= $_SESSION['users_id'] ?>">Change Email</button></td>
                 </form>
             </div>
         </div>

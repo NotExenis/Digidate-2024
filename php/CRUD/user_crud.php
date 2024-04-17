@@ -50,6 +50,12 @@ if( isset($_POST['getColor'])){
     }
 }
 
+if(isset($_POST['user_change_email'])) {
+    EmailChange($_POST['email'], $_POST['user_change_email']);
+    $_SESSION['success_message'] = 'Password has been succesfully changed. Please login to continue using the website!';
+    header('Location:../../index.php?page=user_edit');
+}
+
 if(isset($_POST['user_change_pass'])) {
     if($_POST['password1'] != $_POST['password2']) {
         $_SESSION['error_message'] = 'Password do not match. Try again';
@@ -161,4 +167,16 @@ function PasswordChange($input_password, $user_id) {
 
 function is_valid_password($password) {
     return preg_match('/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*()-_=+{};:,<.>]).{15,}$/', $password);
+}
+
+function EmailChange($input_email, $user_id) {
+    include '../../private/conn.php';
+
+    $sql_admin_insert = 'UPDATE tbl_users SET users_email = :email WHERE users_id = :users_id';
+    $sth_admin_insert = $db->prepare($sql_admin_insert);
+    $sth_admin_insert->bindParam(":email", $input_email);
+    $sth_admin_insert->bindParam(":users_id", $user_id);
+
+    $sth_admin_insert->execute();
+    //header('Location: ../../index.php?page=user_edit');
 }

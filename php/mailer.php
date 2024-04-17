@@ -17,26 +17,44 @@ $diff = $dt->diff($dt_now2, true);
 
 //$id = $_POST['user_id'];
 
-$sql2 = "SELECT users_email FROM tbl_users WHERE users_id = :id";
-$stmt2 = $db->prepare($sql2);
-$stmt2->execute(array(
-    ':id' => $_POST['user_id'],
-));
-$id = $_POST['user_id'];
-$r = $stmt2->fetch();
-$to = $r['users_email'];
-var_dump($id);
-var_dump($r);
-$link = '<a href="http://localhost/digidate/index.php?page=change_password&user_id=""> Change Password</a>';
-$mail = new PHPMailer(true);
-$message = "
+if(isset($_POST['user_id_pass'])) {
+    $user_id = $_POST['user_id_pass'];
+    $email_message = "
 <html lang='en'>
 <body>
-<b>Your request for password change has been approved</b>. Please click the link <a href='http://localhost/digidate/index.php?page=change_password&user_id=$id'> Change Password</a>
+<b>Your request for password change has been approved</b>. Please click the link <a href='http://localhost/digidate/index.php?page=change_password&user_id=$user_id'> Change Password</a>
 </body>
 </html>
 ";
+}
+
+if(isset($_POST['user_id_email'])) {
+    $user_id = $_POST['user_id_email'];
+    $email_message = "
+<html lang='en'>
+<body>
+<b>Your request for email change has been approved</b>. Please click the link <a href='http://localhost/digidate/index.php?page=change_email&user_id=$user_id'> Change Password</a>
+</body>
+</html>
+";
+}
+
+
+$sql2 = "SELECT users_email FROM tbl_users WHERE users_id = :id";
+$stmt2 = $db->prepare($sql2);
+$stmt2->execute(array(
+    ':id' => $user_id,
+));
+//$id = $_POST['user_id'];
+$r = $stmt2->fetch();
+$to = $r['users_email'];
+
+$link = '<a href="http://localhost/digidate/index.php?page=change_password&user_id=""> Change Password</a>';
+$mail = new PHPMailer(true);
+$message = $email_message;
 // sending the user a email if denied
+
+
 try {
     //Server settings
     $mail->SMTPDebug = SMTP::DEBUG_SERVER;
@@ -66,5 +84,6 @@ try {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
 $_SESSION['success_message'] = 'Password has been succesfully changed. Please login to continue using the website!';
-header('location: ../index.php?page=login');
+//header('location: ../index.php?page=login');
+
 ?>
