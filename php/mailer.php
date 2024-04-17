@@ -84,6 +84,6 @@ try {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
 $_SESSION['success_message'] = 'Password has been succesfully changed. Please login to continue using the website!';
-//header('location: ../index.php?page=login');
+header('location: ../index.php?page=login');
 
 ?>
