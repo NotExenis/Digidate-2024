@@ -16,15 +16,16 @@ $result = $sth_tag_select->fetch();
                 <br>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Edit tag</label>
-                    <input type="text" class="form-control" name="tag" placeholder="Tag name" value="<?= $result['tags_title'] ?>" required>
+                    <input type="text" class="form-control" name="tags_title" placeholder="Tag name" value="<?= $result['tags_title'] ?>" required>
                 </div>
                 <br>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Add a color</label>
-                    <input type="color" name="colorpick" value="<?= $result['tags_color'] ?>">
+                    <input type="color" name="tags_color" value="<?= $result['tags_color'] ?>">
                 </div>
                 <br>
-                <button type="submit" class="btn btn-primary" name="tag_edit" value="<?= $result['tags_id'] ?>">Edit tag</button>
+                <input type="hidden" name="tag_edit" value="<?= $result['tags_id'] ?>">
+                <button type="submit" class="btn btn-primary" name="tags_id" value="<?= $result['tags_id'] ?>">Edit tag</button>
             </form>
         </div>
         <div class="col-sm">

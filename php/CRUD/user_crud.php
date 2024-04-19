@@ -86,7 +86,9 @@ function CheckTags($user_id) {
     $stmt_usertags->bindParam(":user_id", $_SESSION['users_id']);
     $stmt_usertags->execute();
     $usertags = $stmt_usertags->fetch(PDO::FETCH_ASSOC);
-    return $usertags;
+    if($usertags) {
+        return $usertags;
+    }
 }
 
 function editProfile($column, $value, $user_id) {
@@ -121,10 +123,9 @@ function addTagsToUser($tag_id, $user_id) {
     $check_tags = CheckTags($user_id);
 
     if(isset($check_tags)) {
-        if (array_count_values($check_tags) >= 5) {
+        if (array_count_values($check_tags) >= 5 AND array_count_values($check_tags) != 0) {
             $_SESSION['notification'] = 'You have tried to add more than the maximum of 5 tags.';
         }
-
     } else {
 
         $sql_add_tag = 'INSERT INTO tbl_usertags (usertags_tags_id, usertags_users_id) VALUES (:value, :user_id)';

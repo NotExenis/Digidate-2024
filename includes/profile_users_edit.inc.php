@@ -264,13 +264,13 @@ $stmt_images->execute();
             </form>
         </div>
         <div class="col-sm">
-
+<!--
 
             <h2>Preview: </h2>
-            <?php
-            $_POST['user_id'] = $_SESSION['users_id'];
+            --><?php
+/*            $_POST['user_id'] = $_SESSION['users_id'];
             include 'open_user.inc.php';
-            ?>
+            */?>
 
         </div>
     </div>

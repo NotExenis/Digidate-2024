@@ -1,6 +1,7 @@
 <?php
 session_start();
 require '../private/conn.php';
+include '../php/audit_trail.php';
 
 $tag = $_POST['tag'];
 $color = $_POST['colorpick'];
@@ -19,6 +20,8 @@ if($stmt->rowCount() == 0){
         ':tag' => $tag,
         ':color' => $color
     ));
+
+    Audit_TagCreate($_SESSION['users_id'], $tag);
     header('Location:../index.php?page=tags');
 } else {
     $_SESSION['notification'] = "Tag you have chosen already exists.";
