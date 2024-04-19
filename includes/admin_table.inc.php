@@ -17,7 +17,6 @@ $sth_admin_select->execute();
             <h1>Admin Table
                 <a href="index.php?page=admin_insert"><button class="btn btn-primary" >INSERT</button></a>
             </h1>
-
             <table>
                 <tr>
                     <th>Admin Name</th>

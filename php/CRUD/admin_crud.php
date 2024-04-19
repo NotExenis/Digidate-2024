@@ -3,7 +3,7 @@ require '../../private/conn.php';
 include '../audit_trail.php';
 
 session_start();
-
+var_dump($_POST);
 if(isset($_POST['admin_add'])) {
     AdminAdd($_POST['first_name'], $_POST['preposition'], $_POST['last_name'], $_POST['email']);
 }
@@ -23,6 +23,7 @@ if(isset($_POST['admin_change_pass'])) {
     } else {
 
         AdminChangePassword($_POST['admin_change_pass'], $_POST['password1']);
+        header('Location:../../index.php?page=2fa_setup');
 
     }
 }
@@ -80,11 +81,19 @@ function AdminEdit($first_name, $preposition, $last_name, $user_id) {
 function AdminDelete($admin_id) {
     include '../../private/conn.php';
 
-    $sql_admin_delete = 'DELETE FROM tbl_users WHERE users_id = :user_id';
+    $stmt = $db->prepare('UPDATE tbl_users SET users_username = :users_id, users_first_name = :users_id, users_preposition = :users_id, users_last_name = :users_id, users_phonenumber = :users_id, users_city = :users_id, users_date_of_birth = :dob, users_is_admin = 0, users_is_active = 0  WHERE users_id = :users_id');
+    $stmt->bindParam(':users_id', $admin_id);
+    $stmt->bindParam(':dob', $dob);
+    if($stmt->execute()){
+        header('Location:../../index.php?page=admin_table');
+    } else {
+        $_SESSION['notification'] = "Something went wrong";
+    }
+    /*$sql_admin_delete = 'DELETE FROM tbl_users WHERE users_id = :user_id';
     $sth_admin_delete = $db->prepare($sql_admin_delete);
     $sth_admin_delete->bindParam(":user_id", $admin_id);
     $sth_admin_delete->execute();
-    header('Location: ../../index.php?page=admin_table');
+    header('Location: ../../index.php?page=admin_table');*/
 
 }
 function AdminChangePassword($admin_id, $admin_password) {
@@ -97,7 +106,6 @@ function AdminChangePassword($admin_id, $admin_password) {
     $sth_admin_password_insert->bindParam(":password", $pass);
 
     $sth_admin_password_insert->execute();
-    header('Location:../../index.php?page=2fa_setup');
 
 
 }

@@ -23,13 +23,6 @@ if (password_verify($password, $r['users_password'])) {
         if ($_SESSION['users_role'] == 1 || $_SESSION['users_role'] == 0) {
             if ($_SESSION['user_active'] == 1) {
                 if ($_SESSION['first_login'] == 1) {
-                    $sql2 = 'UPDATE tbl_users
-                             SET users_first_login = 0
-                             WHERE users_email = :email';
-                    $stmt2 = $db->prepare($sql2);
-                    $stmt2->execute(array(
-                        ':email' => $email,
-                    ));
                     if($_SESSION['users_role'] == 1) {
                         header('Location:../index.php?page=admin_password');
                     } else {

@@ -1,6 +1,7 @@
 <?php
 require 'private/conn.php';
 include 'functions/errormessage.php';
+include 'functions/popupmessage.php';
 if (session_id() == '') {
     session_start();
 }
@@ -43,7 +44,6 @@ $stmt_currentlanguages = $db->prepare($sql_currentlanguages);
 $stmt_currentlanguages->bindParam(':user_languages_users_id', $_SESSION['users_id']);
 $stmt_currentlanguages->execute();
 $result = $stmt_currentlanguages->fetchAll(PDO::FETCH_ASSOC);
-
 
 ?>
 <script src="./functions/showpass.js"></script>
@@ -219,6 +219,24 @@ $result = $stmt_currentlanguages->fetchAll(PDO::FETCH_ASSOC);
                     </button>
                     <br>
                     <button type="submit" class="btn btn-primary" id="edit">Edit</button>
+                </form>
+                <form action="php/mailer.php" method="post">
+                    <?php if(isset($_POST['change_password'])) {
+                        popupmessage('Change Password', 'Are you sure?', 'Continue');
+                    } ?>
+                    <input type="hidden" name="user_id_pass" value="<?= $_SESSION['users_id'] ?>">
+                </form>
+                <form action="" method="post">
+                    <td><button class="btn btn-primary" type="submit" name="change_password" value="<?= $_SESSION['users_id'] ?>">Change Password</button></td>
+                </form>
+                <form action="php/mailer.php" method="post">
+                    <?php if(isset($_POST['change_email'])) {
+                        popupmessage('Change Email', 'Are you sure?', 'Continue');
+                    } ?>
+                    <input type="hidden" name="user_id_email" value="<?= $_SESSION['users_id'] ?>">
+                </form>
+                <form action="" method="post">
+                    <td><button class="btn btn-primary" type="submit" name="change_email" value="<?= $_SESSION['users_id'] ?>">Change Email</button></td>
                 </form>
             </div>
         </div>
