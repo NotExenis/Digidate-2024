@@ -31,8 +31,15 @@ $stmt = $db->prepare($sql);
 $stmt->bindParam(':user_id', $_SESSION['users_id']);
 $stmt->execute();
 
+$sql3 = "SELECT * FROM tbl_genders";
+$stmt3 = $db->prepare($sql3);
+$stmt3->execute();
 
+$sql4 = "SELECT * FROM tbl_education";
+$stmt4 = $db->prepare($sql4);
+$stmt4->execute();
 ?>
+
 
 <div class="container">
     <div class="row row-cols-1 row-cols-md-4 g-4">
@@ -80,9 +87,6 @@ $stmt->execute();
                         <div class="card-body">
                             <h5 class="card-title" style="font-size: 16px; margin-bottom: 5px;"><?= $r['users_username'] ?></h5>
                             <p class="card-text" style="font-size: 14px; margin-bottom: 5px;"><?= $r['users_description'] ?></p>
-                            <button type="button" class="btn btn-danger" style="font-size: 14px;">
-                                <i class="bi bi-x"></i> Dislike
-                            </button>
                             <form action="index.php?page=open_user" method="post">
                                 <button class="btn btn-info">Open profile</button>
                                 <input type="hidden" name="user_id" value="<?= $r['users_id'] ?>">
