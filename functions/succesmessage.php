@@ -8,7 +8,7 @@ function succesmessage($message){
             });
         });
     </script>
-    <div class="alert alert-succes clearfix" id="succes" role="alert">
+c    <div class="alert alert-success clearfix" id="succes" role="alert">
         <div class="d-flex justify-content-between">
             <?php echo $message ?>
             <button type="button" id="close" class="btn btn-close float-right" aria-label="Close"></button>

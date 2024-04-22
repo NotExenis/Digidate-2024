@@ -35,6 +35,10 @@ else{
 <body class="bg-secondary">
   <?php
     include 'includes/navbar.inc.php';
+  if (isset($_SESSION['users_id'])) {
+      require "functions/check_new_message.php";
+      newmessage();
+  }
     include 'includes/'.$page.'.inc.php';
   ?>
 </body>
