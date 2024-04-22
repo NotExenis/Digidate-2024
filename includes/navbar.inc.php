@@ -4,12 +4,17 @@ if(isset($_SESSION['users_role'])){
         $navitems = array(
             array('logout', 'Logout'),
             array('admin_table', 'Admin Table'),
+            array('tag_table', 'Tags'),
+            array('user_edit', 'Edit Account'),
 
         );
     } elseif ($_SESSION['users_role'] == '0'){ //User
         $navitems = array(
-            array('profile_users', 'Meet users'),
             array('logout', 'Logout'),
+            array('profile_users', 'Users'),
+            array('profile_users_edit', 'Edit Profile'),
+            array('matches_table', 'Matches'),
+            array('user_edit', 'Edit Account'),
         );
     } 
 } else {
