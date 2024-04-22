@@ -1,6 +1,12 @@
 <?php
 require 'private/conn.php';
-$id = $_POST['user_id'];
+
+if(isset($_POST['user_id'])) {
+    $id = $_POST['user_id'];
+
+} else if (isset($_GET['user_id'])) {
+    $id = $_GET['user_id'];
+}
 
 $sql = "SELECT * FROM tbl_users WHERE tbl_users.users_id = :user_id";
 $stmt = $db->prepare($sql);
@@ -14,7 +20,7 @@ $stmt2 = $db->prepare($sql2);
 $stmt2->execute(array(
     'user_id' => $id,
 ));
-$images = $stmt2->fetch();
+$images = $stmt2->fetchAll();
 
 $sql3 = "SELECT * FROM tbl_education WHERE education_id = :education_id";
 $stmt3 = $db->prepare($sql3);
@@ -48,7 +54,7 @@ $stmt4->execute(array(
                                     <div class="carousel-inner">
                                         <?php foreach ($images as $key => $image) { ?>
                                             <div class="carousel-item <?= ($key == 0) ? 'active' : '' ?>">
-                                                <img src="data:image/png;base64, <?= $image['images_image'] ?>" alt="User Image" class="card-img-top" style="width: 100%; height: 100%;">
+                                                <img src="data:image/png;base64, <?= $image['images_image']?>" alt="User Image" class="card-img-top" style="width: 100%; height: 100%;">
                                             </div>
                                         <?php } ?>
                                     </div>
@@ -77,7 +83,7 @@ $stmt4->execute(array(
                             <p class="card-text">Date of Birth: <?= $r['users_date_of_birth']; ?></p>
                             <p class="card-text">Education: <?= $studies['education_name']; ?></p>
                             <p class="card-text">Woonplaats: <?= $r['users_city']; ?></p>
-                            <p class="card-text">Education: <?= $r['users_description']; ?></p>
+                            <p class="card-text">Description: <?= $r['users_description']; ?></p>
                             <p class="card-text" >Tags: </p>
                             <?php foreach ($stmt4 as $r){ ?>
                                 <span class="badge rounded-fill badge-clickable" style="background-color: <?= $r['tags_color'] ?>"><?= $r['tags_title'] ?></span>

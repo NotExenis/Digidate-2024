@@ -32,7 +32,7 @@ $stmt_currenteducation->execute();
 if ($row1 = $stmt_currenteducation->fetch(PDO::FETCH_ASSOC)) {
     $currenteducation = $row1['education_name'];
 }
-var_dump($currenteducation_id);
+//var_dump($currenteducation_id);
 
 $sql_education = "SELECT education_name, education_id 
                     FROM tbl_education";

@@ -31,7 +31,6 @@ $result = $sth_matches_select->fetchAll();
 
             <table>
                 <tr>
-                    <th>Photo</th>
                     <th>User Name</th>
                     <th>User Location</th>
                     <th>User Birthdate: </th>
@@ -47,10 +46,7 @@ $result = $sth_matches_select->fetchAll();
                         <td><?= $row['users_username'] ?></td>
                         <td><?= $row['users_city'] ?></td>
                         <td><?= $row['users_date_of_birth'] ?></td>
-                        <?php
-                        if(isset($_SESSION['users_role'])){
-                            if($_SESSION['users_role'] == 1) {
-                                ?>
+
                                 <form action="index.php?page=chat" method="post"><td><button class="btn btn-primary" type="submit" name="user_chat" value="<?= $row['users_id'] ?>">CHAT</button></td></form>
                                 <form action="" method="post">
                                     <?php if(isset($_POST['unmatch_user'])) {
@@ -62,8 +58,7 @@ $result = $sth_matches_select->fetchAll();
                                     <td><button class="btn btn-primary" type="submit" name="unmatch_user" value="<?= $row['users_id'] ?>">Unmatch</button></td>
                                 </form>
                                 <?php
-                            }
-                        }
+
                         ?>
                     </tr>
                 <?php

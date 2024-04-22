@@ -29,6 +29,9 @@ if(isset($_SESSION['users_role'])){
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <ul class="navbar-nav">
+        <li class="nav-item">
+            <a href="index.php?page=landing_page"><img src="photos/image.png" style="max-width: 50px"> </a>
+        </li>
         <?php foreach ((array)$navitems as $navitem) { ?>
             <li class="nav-item">
                 <a class="font-weight-bold nav-link text-light" href="index.php?page=<?= $navitem[0] ?>"><?= $navitem[1] ?></a>

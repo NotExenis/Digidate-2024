@@ -67,8 +67,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         } else {
             $sql2 = "INSERT INTO tbl_users(users_username,users_preposition,users_first_name, users_last_name, users_email, users_password,
-                    users_gender_id,users_city, users_photo, users_date_of_birth, users_phonenumber, users_is_admin, users_first_login)
-                    VALUES(:username, :firstname, :users_preposition, :lastname, :email, :password, :gender, :city, :photo, :dob,  :phone, :isadmin, :firsttime)";
+                    users_gender_id,users_city, users_date_of_birth, users_phonenumber, users_is_admin, users_first_login)
+                    VALUES(:username, :firstname, :users_preposition, :lastname, :email, :password, :gender, :city, :dob,  :phone, :isadmin, :firsttime)";
             $stmt2 = $db->prepare($sql2);
             $stmt2->execute(array(
                 ':username'=>$username,
@@ -78,12 +78,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 ':password'=>$password,
                 ':gender'=>$genders,
                 ':city'=>$city,
-                ':photo'=>$pic,
                 ':dob'=>$birthday,
                 ':phone'=>$phone,
                 ':isadmin'=>$role,
                 ':firsttime'=>$first_time,
                 ':users_preposition'=>$infix
+            ));
+            $last_id = $db->lastInsertId();
+            $sql3 = "INSERT INTO tbl_images (images_user_id, images_image) VALUES (:user_id, :image)";
+            $stmt3 = $db->prepare($sql3);
+            $stmt3->execute(array(
+                ':user_id'=>$last_id,
+                ':image'=>$pic,
             ));
             header('location:../index.php?page=login');
         }

@@ -120,13 +120,13 @@ function editProfile($column, $value, $user_id) {
 function addTagsToUser($tag_id, $user_id) {
     require '../../private/conn.php';
 
-    $check_tags = CheckTags($user_id);
-
+    /*$check_tags = CheckTags($user_id);
+    var_dump($check_tags);
     if(isset($check_tags)) {
-        if (array_count_values($check_tags) >= 5 AND array_count_values($check_tags) != 0) {
-            $_SESSION['notification'] = 'You have tried to add more than the maximum of 5 tags.';
-        }
-    } else {
+        if (array_count_values($check_tags) > 5 ) {
+            $_SESSION['notification'] = 'You have tried to add more than the maximum of 5 tags.'. var_dump($check_tags) ;
+        }*/
+
 
         $sql_add_tag = 'INSERT INTO tbl_usertags (usertags_tags_id, usertags_users_id) VALUES (:value, :user_id)';
         $sth_add_tag = $db->prepare($sql_add_tag);
@@ -134,8 +134,6 @@ function addTagsToUser($tag_id, $user_id) {
         $sth_add_tag->bindParam(":user_id", $user_id);
         $sth_add_tag->execute();
         $_SESSION['success'] = 'Succesfully added tags!';
-
-    }
 
 }
 
