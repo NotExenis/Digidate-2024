@@ -12,7 +12,6 @@ if(isset($_SESSION['notification'])) {
 
 $userID = $_SESSION['users_id'];
 if(isset($_POST['EditUser'])){
-
     $username = $_POST['username'];
     $firstname = $_POST['firstname'];
     $preposition = $_POST['preposition'];

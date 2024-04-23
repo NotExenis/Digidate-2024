@@ -19,7 +19,8 @@ if(isset($_POST['2fa_token'])) {
         $stmt2->execute(array(
             ':user_id' => $_SESSION['users_id'],
         ));
-        header('Location:../index.php?page=landing_page');
+        $_SESSION['success'] = 'You have succesfully activated your account!';
+        header('Location:index.php?page=landing_page');
     } else {
         echo "Token is invalid!";
         $_SESSION['notification'] = 'Two-Factor Authentication error. Please try again.';

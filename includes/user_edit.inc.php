@@ -218,7 +218,7 @@ $result = $stmt_currentlanguages->fetchAll(PDO::FETCH_ASSOC);
                         Edit Languages
                     </button>
                     <br>
-                    <button type="submit" class="btn btn-primary" id="edit">Edit</button>
+                    <button type="submit" class="btn btn-primary" name="EditUser" id="edit">Edit</button>
                 </form>
                 <form action="php/mailer.php" method="post">
                     <?php if(isset($_POST['change_password'])) {

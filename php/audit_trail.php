@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 function CreateLogEntry($action, $table, $column, $old_value, $new_value, $user_id) {
     include '../../private/conn.php';
 
@@ -35,7 +35,6 @@ function Audit_EducationCreate($admin_id, $education_name) {
 function Audit_AdminUpdate($array) {
     include '../../private/conn.php';
 
-
     //include 'private/conn.php';
     $sql_admin_select = "SELECT users_first_name, users_preposition, users_last_name FROM tbl_users WHERE users_id = :user_id";
     $sth_admin_select = $db->prepare($sql_admin_select);
@@ -55,5 +54,27 @@ function Audit_AdminUpdate($array) {
         }
 
 }
+function Audit_TagUpdate($array) {
+    include '../private/conn.php';
+    //include 'private/conn.php';
+    $sql_admin_select = "SELECT * FROM tbl_tags WHERE tags_id = :tags_id";
+    $sth_admin_select = $db->prepare($sql_admin_select);
+    $sth_admin_select->bindParam(":tags_id", $array['tags_id']);
+    $sth_admin_select->execute();
+    $oldValue = $sth_admin_select->fetch();
+
+    print_r($oldValue);
+    foreach($array as $key => $value) {
+        if(isset($oldValue[$key])) {
+            $old_value = $oldValue[$key];
+            if($oldValue[$key] != $value) {
+                CreateLogEntry('Tag Edit', 'tbl_tags', $key, $old_value, $value, $_SESSION['users_id']);
+            }
+        }
+
+    }
+
+}
+
 
 //DELETE AUDITS
