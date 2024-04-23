@@ -78,7 +78,7 @@ $stmt_location->execute();
 
                     <div class="mb-3">
                         <label for="location" class="form-label">Location *</label>
-                        <select class="form-select" value="<?= $location['municipality_id'] ?>" name="location"
+                        <select class="form-select" value="<?= $location['municipality_name'] ?>" name="location"
                                 required>
                             <?php foreach ($stmt_location as $location) { ?>
                                 <option><?= $location['municipality_name'] ?></option>

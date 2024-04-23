@@ -20,7 +20,7 @@ if (isset($_POST['tag_delete'])){
 
 if (isset($_POST['tag_edit'])){
 
-    Audit_TagUpdate($_POST);
+    //Audit_TagUpdate($_POST);
     $sql_tags_insert = 'UPDATE tbl_tags SET tags_title = :tags_title, tags_color = :tags_color WHERE tags_id = :tags_id';
     $sth_tags_insert = $db->prepare($sql_tags_insert);
     $sth_tags_insert->bindParam(":tags_title", $_POST['tags_title']);
@@ -28,5 +28,5 @@ if (isset($_POST['tag_edit'])){
     $sth_tags_insert->bindParam(":tags_id", $_POST['tags_id']);
 
     $sth_tags_insert->execute();
-    //header('Location: ../index.php?page=tag_table');
+    header('Location: ../index.php?page=tag_table');
 }

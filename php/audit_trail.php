@@ -1,7 +1,7 @@
 <?php
 session_start();
 function CreateLogEntry($action, $table, $column, $old_value, $new_value, $user_id) {
-    include '../private/conn.php';
+    include '../../private/conn.php';
 
     $sql_create_log = 'INSERT INTO tbl_audit (audit_action, audit_table, audit_column, audit_old_value, audit_current_value, audit_user_id) VALUES (:action, :table, :column, :old_value, :new_value, :user_id)';
     $sth_create_log = $db->prepare($sql_create_log);

@@ -1,6 +1,6 @@
 <?php
 
-require 'functions/succesmessage.php';
+//require 'functions/succesmessage.php';
 
 if(isset($_SESSION['success'])) {
     $error = $_SESSION['success'];

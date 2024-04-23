@@ -21,7 +21,7 @@ if($stmt->rowCount() == 0){
         ':color' => $color
     ));
 
-    Audit_TagCreate($_SESSION['users_id'], $tag);
+    //Audit_TagCreate($_SESSION['users_id'], $tag);
     header('Location:../index.php?page=tags');
 } else {
     $_SESSION['notification'] = "Tag you have chosen already exists.";

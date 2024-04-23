@@ -2,11 +2,10 @@
 require 'private/conn.php';
 require 'functions/multi_select_form.php';
 require "functions/errormessage.php";
-require "functions/succesmessage.php";
 
 if(isset($_SESSION['notification'])) {
-    $error = $_SESSION['notification'];
-    errormessage($error);
+    $error_notify = $_SESSION['notification'];
+    errormessage($error_notify);
     unset($_SESSION['notification']);
 }
 if(isset($_SESSION['success'])) {

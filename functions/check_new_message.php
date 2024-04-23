@@ -19,10 +19,12 @@ function newmessage(){
     $stmt->bindParam(":users_id", $userID);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($result) {
+        if ($result['message_count'] > 0) {
+            $_SESSION['notification'] = "You have new message!";
 
-    if ($result['message_count'] > 0) {
-        $_SESSION['notification'] = "You have new message!";
-
+        }
     }
+
 }
 
